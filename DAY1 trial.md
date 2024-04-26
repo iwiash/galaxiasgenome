@@ -3,6 +3,7 @@ load modules
 module load pigz
 module load SAMtools
 module load NanoComp
+module load cutadapt
 ```
 
 **Subset of the data (from module not galax) to confirm it works**
@@ -91,20 +92,55 @@ idk if i rly need to save this but im gonna
 ##Now for fish
 
 ```
-head -n 200000 GbrevPB.hifi_reads.bam | pigz > hifi_fish_reads.fq.gz
+samtools fastq -@4 GbrevPB.hifi_reads.bam | head -n 100000 | pigz > gbrev_hifi_read_subset.fq.gz
 ```
-im pretty sure i dont need to zcat this coz its not compressed?
+use the ONT downsample code instead
+converts bam to fastq, subsets 100000 lines, compresses fastq w pigz
 
-ok now the next set of code is giving me errors and idk why :(
+**nanocomp**
+```
+NanoComp --fastq gbrev_hifi_read_subset.fq.gz --names PacBio_Hifi --outdir nanocomp_gbrev_hifi
+```
+makes lots of plots and summary stats
 
-**ok here is what chatpt told me to do**
+**cutadapt to remove adapter seq**
 ```
-samtools view -h input.bam | head -n 200000 | samtools view -bS - > subset.bam
+cutadapt \
+-b "AAAAAAAAAAAAAAAAAATTAACGGAGGAGGAGGA;min_overlap=35" \
+-b "ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT;min_overlap=45" \
+--discard-trimmed \
+-o /dev/null \
+gbrev_hifi_read_subset.fq.gz \
+-j 0 --revcomp -e 0.05
 ```
-view -h "inputfile.bam" reads and outputs as SAM
-view -bS converts the SAM back to a new BAM subset.bam
-```
-samtools view -h GbrevPB.hifi_reads.bam | head -n 200000 | samtools view -bS - > fish_subset.bam
-```
-then i put this back through the nanocomp and still didnt work scream cry forever
+-b - which seq to cut
+discard trimmed - get rid of trimmed seq
+-o output file, /dev/null is a file in unix-likes that discards data written to it
+-j 0 - number of cpu threads to use - 0 uses as many threads as there are cpu cores available?
+--revcomp - reverse complement - tells to reverse complemet after trimming
+-e - error rate set to 0.05 - only trims if seq matches with error rate of 5% or less
+
+*Output:*
+=== Summary ===
+
+Total reads processed:                  25,000
+Reads with adapters:                         0 (0.0%)
+Reverse-complemented:                        0 (0.0%)
+
+== Read fate breakdown ==
+Reads discarded as trimmed:                  0 (0.0%)
+Reads written (passing filters):        25,000 (100.0%)
+
+Total basepairs processed:   350,979,301 bp
+Total written (filtered):    350,979,301 bp (100.0%)
+
+=== Adapter 1 ===
+
+Sequence: AAAAAAAAAAAAAAAAAATTAACGGAGGAGGAGGA; Type: variable 5'/3'; Length: 35; Trimmed: 0 times; Reverse-complemented: 0 times
+
+=== Adapter 2 ===
+
+Sequence: ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT; Type: variable 5'/3'; Length: 45; Trimmed: 0 times; Reverse-complemented: 0 times
+
+**doesn't look like it trimmed anything- no adapter seq in data hopefully**
 
