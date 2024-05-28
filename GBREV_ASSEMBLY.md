@@ -5,6 +5,7 @@ Modules
 module load SAMtools
 module load pigz
 module load NanoComp
+module load cutadapt
 ```
 
 Convert to fastq
