@@ -21,3 +21,15 @@ NanoComp
 ```
 NanoComp --fastq gbrev_hifi_reads.fq.gz --names Gbrev_PacBio_HiFi --outdir nanocomp_assembly_hifi
 ```
+
+Cutadapt
+```
+cutadapt -b "AAAAAAAAAAAAAAAAAATTAACGGAGGAGGAGGA;min_overlap=35" \
+> -b "ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT;min_overlap=45" \
+> --discard-trimmed \
+>  -o /dev/null \
+> gbrev_hifi_reads.fq.gz \
+> -j 0 \
+> --revcomp \
+> -e 0.05
+```
