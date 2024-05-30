@@ -9,10 +9,12 @@ module load hifiasm
 
 hifiasm \
     -o GB_full \
-    -t \
+    -t 128 \
     gbrev_hifi_reads.fq.gz \
     2> test.log
+
 echo "assembly done, starting onversion"
+
 awk '/^S/{print ">"$2;print $3}' \
     GB_full.bp.p_ctg.gfa \
     > GB_full.p_ctg.fa
