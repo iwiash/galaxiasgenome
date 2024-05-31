@@ -13,7 +13,7 @@ hifiasm \
     gbrev_hifi_reads.fq.gz \
     2> test.log
 
-echo "assembly done, starting onversion"
+echo "assembly done, starting conversion"
 
 awk '/^S/{print ">"$2;print $3}' \
     GB_full.bp.p_ctg.gfa \
