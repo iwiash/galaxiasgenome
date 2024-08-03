@@ -72,4 +72,13 @@ length  count   expect  max.err error counts
 17444   1       0.0     2       1
 ```
 
+HiC
 
+Trimming UMIs - remove first 10 bases
+
+```
+zcat Bruce_fish_HiC_S1_R1_001.fastq.gz | awk '{ if(NR%2==0) {print substr($1,10)} else {print} }' | gzip > Fish_HiC_trimmed_R1_001.fastq.gz
+
+zcat Bruce_fish_HiC_S1_R2_001.fastq.gz | awk '{ if(NR%2==0) {print substr($1,10)} else {print} }' | gzip > Fish_HiC_trimmed_R2_001.fastq.gz
+```
+R1 and R2 are the forward and reverse reads - first readd in R1 matches first read in R2
