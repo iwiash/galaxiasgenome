@@ -11,7 +11,7 @@ hifiasm \
     -o GB_full_HIC \
     -t32 \
     --h1 gbrev_hifi_reads.fq.gz \
-    HiFi-reads.fq.gz
+    HiFi-reads.fq.gz \
     (2> test.log?)
 
 **old code no hifi
