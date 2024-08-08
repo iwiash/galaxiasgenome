@@ -4,23 +4,16 @@
 #SBATCH --mem=230G          # Memory in MB
 #SBATCH --account=uoo02831
 #SBATCH --cpus-per-task=128
-#SBATCH --partition=milan
+#SBATCH --partition=bigmem
 module load hifiasm
 
 hifiasm \
     -o GB_full_HIC \
-    -t32 \
-    --h1 gbrev_hifi_reads.fq.gz \
-    HiFi-reads.fq.gz \
-    (2> test.log?)
-
-**old code no hifi
-hifiasm \
-    -o GB_full \
-    -t 128 \
-    gbrev_hifi_reads.fq.gz \
+    -t128 \
+    --h1 Fish_HiC_trimmed_R1_001.fastq.gz \
+    --h2 Fish_HiC_trimmed_R2_001.fastq.gz \
+    gbrev_hifi_reads.fq.gz\
     2> test.log
-**end old code
 
 echo "assembly done, starting conversion"
 
