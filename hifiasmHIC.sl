@@ -4,7 +4,7 @@
 #SBATCH --mem=230G          # Memory in MB
 #SBATCH --account=uoo02831
 #SBATCH --cpus-per-task=128
-#SBATCH --partition=bigmem
+#SBATCH --partition=milan
 module load hifiasm
 
 hifiasm \
