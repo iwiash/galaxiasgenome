@@ -18,7 +18,7 @@ hifiasm \
 echo "assembly done, starting conversion"
 
 awk '/^S/{print ">"$2;print $3}' \
-    GB_full_HIC.bp.p_ctg.gfa \
+    GB_full_HIC.hic.p_ctg.gfa \
     > GB_full_HIC.p_ctg.fa
 
 
