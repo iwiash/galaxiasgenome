@@ -82,3 +82,54 @@ zcat Bruce_fish_HiC_S1_R1_001.fastq.gz | awk '{ if(NR%2==0) {print substr($1,10)
 zcat Bruce_fish_HiC_S1_R2_001.fastq.gz | awk '{ if(NR%2==0) {print substr($1,10)} else {print} }' | gzip > Fish_HiC_trimmed_R2_001.fastq.gz
 ```
 R1 and R2 are the forward and reverse reads - first readd in R1 matches first read in R2
+
+Assembly
+
+```
+nano hifiasmHIC.sl (see hifiasmHIC.sl)
+
+sbatch hifiasm.sl
+```
+ gfastats
+
+ ```
+module load gfastats
+
+gfastats GB_full_HIC.p_ctg.fa
+```
+gfastats output:
+```
++++Assembly summary+++: 
+# scaffolds: 664
+Total scaffold length: 630588521
+Average scaffold length: 949681.51
+Scaffold N50: 7215088
+Scaffold auN: 8253254.37
+Scaffold L50: 27
+Largest scaffold: 28003021
+Smallest scaffold: 12723
+# contigs: 664
+Total contig length: 630588521
+Average contig length: 949681.51
+Contig N50: 7215088
+Contig auN: 8253254.37
+Contig L50: 27
+Largest contig: 28003021
+Smallest contig: 12723
+# gaps in scaffolds: 0
+Total gap length in scaffolds: 0
+Average gap length in scaffolds: 0.00
+Gap N50 in scaffolds: 0
+Gap auN in scaffolds: 0.00
+Gap L50 in scaffolds: 0
+Largest gap in scaffolds: 0
+Smallest gap in scaffolds: 0
+Base composition (A:C:G:T): 176460736:138981680:138809043:176337062
+GC content %: 44.05
+# soft-masked bases: 0
+# segments: 664
+Total segment length: 630588521
+Average segment length: 949681.51
+# gaps: 0
+# paths: 664
+```
