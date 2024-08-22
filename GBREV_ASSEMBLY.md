@@ -133,3 +133,39 @@ Average segment length: 949681.51
 # gaps: 0
 # paths: 664
 ```
+gfastats for non Hi-C assembly:
+```
++++Assembly summary+++: 
+# scaffolds: 639
+Total scaffold length: 632314749
+Average scaffold length: 989537.95
+Scaffold N50: 7968812
+Scaffold auN: 8500142.03
+Scaffold L50: 26
+Largest scaffold: 27992649
+Smallest scaffold: 12723
+# contigs: 639
+Total contig length: 632314749
+Average contig length: 989537.95
+Contig N50: 7968812
+Contig auN: 8500142.03
+Contig L50: 26
+Largest contig: 27992649
+Smallest contig: 12723
+# gaps in scaffolds: 0
+Total gap length in scaffolds: 0
+Average gap length in scaffolds: 0.00
+Gap N50 in scaffolds: 0
+Gap auN in scaffolds: 0.00
+Gap L50 in scaffolds: 0
+Largest gap in scaffolds: 0
+Smallest gap in scaffolds: 0
+Base composition (A:C:G:T): 176996940:139238790:139232729:176846290
+GC content %: 44.04
+# soft-masked bases: 0
+# segments: 639
+Total segment length: 632314749
+Average segment length: 989537.95
+# gaps: 0
+# paths: 639
+```
