@@ -169,3 +169,13 @@ Average segment length: 989537.95
 # gaps: 0
 # paths: 639
 ```
+purge_dups
+
+```
+module load purge_dups
+```
+create config file
+```
+pd_config.py -l tempdir -n config_gbrev.json GB_full.p_ctg.fa asm1_config_ref
+```
+try for src using . or "." if that doesnt work
