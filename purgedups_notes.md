@@ -19,3 +19,7 @@ run_purge_dups.py (config file) src (species identifier - made up, i guess just 
 ```
 which purge_dups <- tells you where it is, copy absol path and put in 'src
 ```
+code that didnt work
+```
+run_purge_dups.py config_gbrev.json /opt/nesi/CS400_centos7_bdw/purge_dups/1.2.6-gimkl-2022a-Python-3.10.5/bin/purge_dups gBrev1
+```
