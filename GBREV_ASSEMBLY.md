@@ -179,3 +179,9 @@ create config file
 pd_config.py -l tempdir -n config_gbrev.json GB_full.p_ctg.fa asm1_config_ref
 ```
 try for src using . or "." if that doesnt work
+
+step 3 that didnt work:
+```
+run_purge_dups.py config_gbrev.json /opt/nesi/CS400_centos7_bdw/purge_dups/1.2.6-gimkl-2022a-Python-3.10.5/bin/purge_dups gBrev1
+
+```
