@@ -185,3 +185,21 @@ step 3 that didnt work:
 run_purge_dups.py config_gbrev.json /opt/nesi/CS400_centos7_bdw/purge_dups/1.2.6-gimkl-2022a-Python-3.10.5/bin/purge_dups gBrev1
 
 ```
+ok purgedups did not work - tabled for now
+
+purge_haplotigs:
+```
+module load minimap2
+module load SAMtools
+module load BEDTools
+module load purge_haplotigs
+```
+1.  mapping longreads back to assembly:
+```
+minimap2 -ax map-hifi GB_full.p_ctg gbrev_hifi_reads.fq.gz --secondary=no | samtools sort -m 5G -o gb_aligned.bam -T tmp.ai
+```
+-ax - output as sam, presets for hifi mapping
+(assembly) (longreads) 
+--secondary=no - i have no clue
+pipe to samtools, idk what sort does -m looks like memory 2 use? -o output bam and idk what -T is   maybe temporary files
+
