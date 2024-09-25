@@ -208,4 +208,17 @@ purge_haplotigs hist -b gb_aligned.bam -g GB_full.p_ctg.fa
 ```
 -b bam?  - g genome?
 
+FAILED!!!! output:
+Beginning read-depth histogram generation
+[25-09-2024 19:59:03] running genome coverage analysis on gb_aligned.bam
+[25-09-2024 20:07:01] ERROR: Failed to close pipe: samtools depth -a -r "ptg000003l" gb_aligned.bam 2>> tmp_purge_haplotigs/STDERR/samtoolsDepth.stderr | (this script), check tmp_purge_haplotigs/STDERR/samtoolsDepth.stderr
+
+PIPELINE FAILURE
+
+Perl exited with active threads:
+        3 running and unjoined
+        1 finished and unjoined
+        0 running and detached
+
+        what the heelll
 
