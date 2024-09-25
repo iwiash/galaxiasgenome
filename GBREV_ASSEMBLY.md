@@ -202,4 +202,10 @@ minimap2 -ax map-hifi GB_full.p_ctg gbrev_hifi_reads.fq.gz --secondary=no | samt
 (assembly) (longreads) 
 --secondary=no - i have no clue
 pipe to samtools, idk what sort does -m looks like memory 2 use? -o output bam and idk what -T is   maybe temporary files
+2. create histogram with purge_haplotigs
+```
+purge_haplotigs hist -b gb_aligned.bam -g GB_full.p_ctg.fa
+```
+-b bam?  - g genome?
+
 
