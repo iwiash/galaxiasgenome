@@ -187,39 +187,54 @@ run_purge_dups.py config_gbrev.json /opt/nesi/CS400_centos7_bdw/purge_dups/1.2.6
 ```
 ok purgedups did not work - tabled for now
 
-purge_haplotigs:
+## purge_haplotigs:
 ```
 module load minimap2
 module load SAMtools
 module load BEDTools
 module load purge_haplotigs
 ```
-1.  mapping longreads back to assembly:
+### 1.  mapping longreads back to assembly:
 ```
-minimap2 -ax map-hifi GB_full.p_ctg gbrev_hifi_reads.fq.gz --secondary=no | samtools sort -m 5G -o gb_aligned.bam -T tmp.ai
+minimap2 -ax map-hifi GB_full.p_ctg.fa gbrev_hifi_reads.fq.gz --secondary=no | samtools sort -m 5G -o gb_aligned.bam -T tmp.ai
 ```
 -ax - output as sam, presets for hifi mapping
 (assembly) (longreads) 
 --secondary=no - i have no clue
 pipe to samtools, idk what sort does -m looks like memory 2 use? -o output bam and idk what -T is   maybe temporary files
-2. create histogram with purge_haplotigs
+
+### ASIDE: rerunning this with the specific numbers from sebastian code and also adding the .fa to end of alignment = failed
+output:
+```
+[M::mm_idx_gen::12.600*1.62] collected minimizers
+[M::mm_idx_gen::16.041*1.69] sorted minimizers
+[M::main::16.041*1.69] loaded/built the index for 639 target sequence(s)
+[M::mm_mapopt_update::16.679*1.66] mid_occ = 186
+[M::mm_idx_stat] kmer size: 19; skip: 19; is_hpc: 0; #seq: 639
+[M::mm_idx_stat::17.045*1.65] distinct minimizers: 44477099 (93.34% are singletons); average occurrences: 1.487; average spacing: 9.562; total length: 632314749
+[M::worker_pipeline::562.797*1.98] mapped 35601 sequences
+[M::worker_pipeline::1006.383*1.99] mapped 35543 sequences
+[M::worker_pipeline::1515.339*1.99] mapped 35679 sequences
+[M::worker_pipeline::1944.151*1.99] mapped 35729 sequences
+[E::sam_parse1] SEQ and QUAL are of different length
+[W::sam_read1_sam] Parse error at line 152657
+samtools sort: truncated file. Aborting
+```
+
+### 2. create histogram with purge_haplotigs
 ```
 purge_haplotigs hist -b gb_aligned.bam -g GB_full.p_ctg.fa
 ```
 -b bam?  - g genome?
 
-FAILED!!!! output:
-Beginning read-depth histogram generation
-[25-09-2024 19:59:03] running genome coverage analysis on gb_aligned.bam
-[25-09-2024 20:07:01] ERROR: Failed to close pipe: samtools depth -a -r "ptg000003l" gb_aligned.bam 2>> tmp_purge_haplotigs/STDERR/samtoolsDepth.stderr | (this script), check tmp_purge_haplotigs/STDERR/samtoolsDepth.stderr
+this failed boooo
 
-PIPELINE FAILURE
+## rerunning purge_dups without json based on lydia code
 
-Perl exited with active threads:
-        3 running and unjoined
-        1 finished and unjoined
-        0 running and detached
+### minimap2 
+aligning reads to the genome 
+```
+minimap2 -ax map-hifi GB_full.p_ctg.fa gbrev_hifi_reads.fq.gz > aln.sam
+```
 
-        what the heelll
-rerun with the number versions at the end and see what happens!
 
