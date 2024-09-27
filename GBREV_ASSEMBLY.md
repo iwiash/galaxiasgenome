@@ -236,5 +236,14 @@ aligning reads to the genome
 ```
 minimap2 -ax map-hifi GB_full.p_ctg.fa gbrev_hifi_reads.fq.gz > aln.sam
 ```
-
+first little bit of output was this:
+```
+[M::mm_idx_gen::11.710*1.62] collected minimizers
+[M::mm_idx_gen::14.836*1.69] sorted minimizers
+[M::main::14.837*1.69] loaded/built the index for 639 target sequence(s)
+[M::mm_mapopt_update::15.431*1.66] mid_occ = 186
+[M::mm_idx_stat] kmer size: 19; skip: 19; is_hpc: 0; #seq: 639
+[M::mm_idx_stat::15.769*1.65] distinct minimizers: 44477099 (93.34% are singletons); average occurrences: 1.487; average spacing: 9.562; total length: 632314749
+then just those ### reads mapped
+```
 
