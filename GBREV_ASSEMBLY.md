@@ -246,4 +246,11 @@ first little bit of output was this:
 [M::mm_idx_stat::15.769*1.65] distinct minimizers: 44477099 (93.34% are singletons); average occurrences: 1.487; average spacing: 9.562; total length: 632314749
 then just those ### reads mapped
 ```
+set running for 8 hours and did not finish... might have to send off as a job
 
+## Jellyfish
+
+```
+jellyfish count -m 21 -s 100M -t 8 -C <(zcat gbrev_hifi_reads.fq.gz)
+```
+counts canonical(-C) 21-mers in the sequence file
