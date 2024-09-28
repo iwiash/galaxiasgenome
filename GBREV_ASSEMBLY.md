@@ -197,6 +197,8 @@ module load purge_haplotigs
 ### 1.  mapping longreads back to assembly:
 ```
 minimap2 -ax map-hifi GB_full.p_ctg.fa gbrev_hifi_reads.fq.gz --secondary=no | samtools sort -m 5G -o gb_aligned.bam -T tmp.ai
+
+minimap2 -ax map-hifi GB_full_HIC.p_ctg.fa gbrev_hifi_reads.fq.gz --secondary=no | samtools sort -m 5G -o gb_HiC_aligned.bam -T mmtmp.ai (hiC)
 ```
 -ax - output as sam, presets for hifi mapping
 (assembly) (longreads) 
