@@ -254,3 +254,10 @@ set running for 8 hours and did not finish... might have to send off as a job
 jellyfish count -m 21 -s 100M -t 8 -C <(zcat gbrev_hifi_reads.fq.gz)
 ```
 counts canonical(-C) 21-mers in the sequence file
+
+keeps getting killed?
+
+## BUSCO
+```
+ busco -i GB_full.p_ctg.fa -m geno -o gbrev --auto-lineage-euk
+```
