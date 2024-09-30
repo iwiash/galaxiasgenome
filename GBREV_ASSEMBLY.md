@@ -259,7 +259,3 @@ counts canonical(-C) 21-mers in the sequence file
 
 keeps getting killed?
 
-## BUSCO
-```
- busco -i GB_full.p_ctg.fa -m geno -o gbrev --auto-lineage-euk
-```
