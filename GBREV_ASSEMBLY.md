@@ -90,6 +90,8 @@ nano hifiasmHIC.sl (see hifiasmHIC.sl)
 
 sbatch hifiasm.sl
 ```
+ >>>maybe split doc here?  its getting kind of unwieldy -preprocessing vs post assembly qc - or just fix the formatting
+ 
  gfastats
 
  ```
