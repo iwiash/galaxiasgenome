@@ -260,3 +260,36 @@ counts canonical(-C) 21-mers in the sequence file
 
 keeps getting killed?
 
+### BUSCO???
+```
+ busco -i GB_full.p_ctg.fa -m geno -o gbrev --auto-lineage-euk
+```
+i kinda dont know how this works so i dont know if this actually ran right or not
+
+looks like it has output some stuff?
+```
+# BUSCO version is: 5.6.1 
+# The lineage dataset is: eukaryota_odb10 (Creation date: 2024-01-08, number of genomes: 70, number of BUSCOs: 255)
+# Summarized benchmarking in BUSCO notation for file /scale_wlg_nobackup/filesets/nobackup/uoo02831/ashleigh/source_files/genome/Gbrev_assembly/asm1_purgedups/GB_full.p_ctg.fa
+# BUSCO was run in mode: euk_genome_met
+# Gene predictor used: metaeuk
+
+	***** Results: *****
+
+	C:99.6%[S:96.1%,D:3.5%],F:0.0%,M:0.4%,n:255	   
+	254	Complete BUSCOs (C)			   
+	245	Complete and single-copy BUSCOs (S)	   
+	9	Complete and duplicated BUSCOs (D)	   
+	0	Fragmented BUSCOs (F)			   
+	1	Missing BUSCOs (M)			   
+	255	Total BUSCO groups searched		   
+
+Assembly Statistics: <- nothing under here?
+
+
+Dependencies and versions:
+	hmmsearch: 3.3
+	bbtools: 39.01
+	metaeuk: GITDIR-NOTFOUND  <- is this bad?
+	busco: 5.6.1
+```
