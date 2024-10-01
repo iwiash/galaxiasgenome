@@ -1,15 +1,11 @@
 #!/bin/bash -e
-#SBATCH --job-name=gbminimap Job name (shows up in the queue)
+#SBATCH --job-name=gbminimap # Job name (shows up in the queue)
 #SBATCH --time=48:00:00      # Walltime (HH:MM:SS) 48h
-#SBATCH --mem=32G          # Memory in MB
+#SBATCH --mem=32G            # Memory in MB
 #SBATCH --account=uoo02831
 #SBATCH --cpus-per-task=16
 
-module load purge_dups
 module load minimap2
-module load SAMtools
-module load BEDTools 
-#dont think i actually need sam/bed/purgedups here.. take out?
 
 minimap2 \
     -t 16 -ax map-hifi \
