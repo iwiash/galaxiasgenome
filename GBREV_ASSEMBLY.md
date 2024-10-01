@@ -293,3 +293,4 @@ Dependencies and versions:
 	metaeuk: GITDIR-NOTFOUND  <- is this bad?
 	busco: 5.6.1
 ```
+but on the log file it says it failed sooooooo idk  prob should just wait till later
