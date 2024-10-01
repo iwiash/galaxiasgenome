@@ -259,6 +259,14 @@ jellyfish count -m 21 -s 100M -t 4 -C <(zcat gbrev_hifi_reads.fq.gz)
 counts canonical(-C) 21-mers in the sequence file
 
 memory issue - ran with -t 4 and 32 G
+plot histogram:
+```
+jellyfish histo -t 4 mer_counts.jf > gb_reads.histo
+```
+
+
+
+
 
 ### BUSCO???
 ```
@@ -293,4 +301,4 @@ Dependencies and versions:
 	metaeuk: GITDIR-NOTFOUND  <- is this bad?
 	busco: 5.6.1
 ```
-but on the log file it says it failed sooooooo idk  prob should just wait till later
+but on the log file it says it failed sooooooo idk  prob should just wait till later and stop randomly running things
