@@ -204,7 +204,7 @@ minimap2 -ax map-hifi GB_full.p_ctg.fa gbrev_hifi_reads.fq.gz --secondary=no | s
 --secondary=no - i have no clue
 pipe to samtools, idk what sort does -m looks like memory 2 use? -o output bam and idk what -T is   maybe temporary files
 
-### ASIDE: rerunning this with the specific numbers from sebastian code and also adding the .fa to end of alignment = failed
+**ASIDE: rerunning this with the specific numbers from sebastian code and also adding the .fa to end of alignment = failed**
 output:
 ```
 [M::mm_idx_gen::12.600*1.62] collected minimizers
