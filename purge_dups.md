@@ -48,4 +48,29 @@ pbcstat GB_aln.paf.gz #produces PB.base.cov and PB.stat files
 
 calcuts PB.stat > cutoffs 2>calcults.log
 ```
+**3. split assembly and do self-self alignment?**
+```
+split_fa GB_full.p_ctg.fa > GB_asm.split
 
+minimap2 -xasm5 -DP GB_asm.split GB_asm.split | gzip -c - > GB_asm.split.self.paf.gz
+```
+splits the assembly then aligns to itself??? whu
+
+**4. purge haplotigs and duplicates**
+```
+purge_dups -2 -T cutoffs -c PB.base.cov GB_asm.split.self.paf.gz > dups.bed 2> purge_dups.log
+```
+
+**5. Get purged primary and haplotig sequences from draft assembly** 
+```
+get_seqs -e dups.bed GB_full.p_ctg.fa
+
+OUTPUT:
+[W::get_seqs_core] ptg000001l 3240744 3276904 is skipped
+[W::get_seqs_core] ptg000039l 3478938 3546001 is skipped
+[W::get_seqs_core] ptg000073l 1330939 1349834 is skipped
+[W::get_seqs_core] ptg000099l 1182349 1251107 is skipped
+[W::get_seqs_core] ptg000187l 202589 420058 is skipped
+```
+is this right?????? im so confused
+-e option means only removes duplications from ends of contigs - remove if want to take from middle as well but might delete false positive duplications
