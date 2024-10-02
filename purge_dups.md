@@ -4,7 +4,9 @@
 ```
 sbatch gbminimap2.sl
 ```
-aligns and converts aligned sam to paf.gz for next steps
+[gbminimap2.sl](gbminimap2.sl) - aligns and converts aligned sam to paf.gz for next steps
+edit: i actually think it didnt convert to paf -a outputs as sam i think - so GB_aln.paf.gz is a sam i think?? just compressed
+downstream steps all ran empty when using the output from this one so i reran it slightly differently
 ```
 seff 50616280
 
@@ -23,7 +25,8 @@ Memory Efficiency: 34.13% of 32.00 GB
 ```
 if need to rerun can reduce memory/time
 
-reran with asm20 and with paf output?
+[minimap_paf.sl](minimap_paf.sl) - reran with xasm20 and with paf output?
+<!--xasm20 for CSS reads - im honestly still unclear on if this was right or should stick with map-hifi but... whats done is done--> 
 ```
 sbatch minimap_paf.sl
 
@@ -41,6 +44,7 @@ Memory Utilized: 6.68 GB
 Memory Efficiency: 20.89% of 32.00 GB
 ```
 didnt reduce mem coz i got scared but def can
+<!--not sure if this was strictly necessary - could have converted the sam manually? but idk how to do that so!-->
 
 **2. stats for mapped long reads**
 ```
