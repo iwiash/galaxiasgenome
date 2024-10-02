@@ -14,3 +14,7 @@ minimap2 \
     2> minimap2_errors2.log
 
 echo "Alignment and PAF conversion done."
+
+#asm20 for CSS reads - the other one was for CLM? i think thats smth different, but surely hifi would still be right for hifi reads
+#outputs as .paf instead of SAM- downstream analysis runs on paf so did not work with the sam output
+#alternatively could just convert sam to paf in terminal but idk how to do that 
