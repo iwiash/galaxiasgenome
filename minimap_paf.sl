@@ -10,7 +10,7 @@ module load minimap2
 minimap2 \
     -t 16 -x asm20 \
     GB_full.p_ctg.fa gbrev_hifi_reads.fq.gz \
-    | gzip -c - > gbrev_hifi_reads.paf.gz \
+    | gzip -c - > gbrev_aln.paf.gz \
     2> minimap2_errors2.log
 
 echo "Alignment and PAF conversion done."
