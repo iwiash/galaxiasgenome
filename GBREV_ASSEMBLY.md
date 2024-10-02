@@ -251,6 +251,8 @@ then just those ### reads mapped
 ```
 set running for 8 hours and did not finish... might have to send off as a job
 
+ok working bit of purge_dups code is now in [purge_dups.md](purge_dups.md)
+
 ## Jellyfish
 
 ```
