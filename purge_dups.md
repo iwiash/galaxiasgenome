@@ -41,8 +41,11 @@ Memory Utilized: 6.68 GB
 Memory Efficiency: 20.89% of 32.00 GB
 ```
 didnt reduce mem coz i got scared but def can
+
 **2. stats for mapped long reads**
 ```
-pbcstat GB_aln.paf.gz
+pbcstat GB_aln.paf.gz #produces PB.base.cov and PB.stat files
+
+calcuts PB.stat > cutoffs 2>calcults.log
 ```
-produces PB.base.cov and PB.stat files
+
