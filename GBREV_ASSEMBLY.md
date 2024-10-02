@@ -265,10 +265,10 @@ plot histogram:
 ```
 jellyfish histo -t 4 mer_counts.jf > gb_reads.histo
 ```
-
-
-
-
+do with one million instead of default?
+```
+jellyfish histo -t 4 --high=1000000 mer_counts.jf > mill_reads.histo
+```
 
 ### BUSCO???
 ```
