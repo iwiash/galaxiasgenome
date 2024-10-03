@@ -78,3 +78,44 @@ OUTPUT:
 ```
 is this right?????? im so confused
 -e option means only removes duplications from ends of contigs - remove if want to take from middle as well but might delete false positive duplications
+
+**looking at output hap.fa**
+```
+gfastats hap.fa
+
+OUTPUT:
++++Assembly summary+++: 
+# scaffolds: 397
+Total scaffold length: 28433761
+Average scaffold length: 71621.56
+Scaffold N50: 106848
+Scaffold auN: 698905.64
+Scaffold L50: 33
+Largest scaffold: 3280424
+Smallest scaffold: 12723
+# contigs: 397
+Total contig length: 28433761
+Average contig length: 71621.56
+Contig N50: 106848
+Contig auN: 698905.64
+Contig L50: 33
+Largest contig: 3280424
+Smallest contig: 12723
+# gaps in scaffolds: 0
+Total gap length in scaffolds: 0
+Average gap length in scaffolds: 0.00
+Gap N50 in scaffolds: 0
+Gap auN in scaffolds: 0.00
+Gap L50 in scaffolds: 0
+Largest gap in scaffolds: 0
+Smallest gap in scaffolds: 0
+Base composition (A:C:G:T): 7128599:6979205:7035298:7290659
+GC content %: 49.29
+# soft-masked bases: 0
+# segments: 397
+Total segment length: 28433761
+Average segment length: 71621.56
+# gaps: 0
+# paths: 397
+```
+this is way smaller than the initial assemblies.  maybe it is not the final purged assembly but im not sure what that is then..
