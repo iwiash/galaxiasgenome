@@ -160,3 +160,10 @@ Average segment length: 2270229.28
 # paths: 266
 ```
 this seems way more palusible but idk where it came from
+
+## BUSCO
+running BUSCO on the purged.fa file to see how it looks:
+```
+busco -i purged.fa -m geno -o gbrev_purged_BUSCO -l eukaryota_odb10
+```
+
