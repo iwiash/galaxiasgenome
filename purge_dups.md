@@ -119,3 +119,44 @@ Average segment length: 71621.56
 # paths: 397
 ```
 this is way smaller than the initial assemblies.  maybe it is not the final purged assembly but im not sure what that is then..
+
+**looking at purged.fa**
+```
+gfastats purged.fa
+
+OUTPUT:
++++Assembly summary+++: 
+# scaffolds: 266
+Total scaffold length: 603880988
+Average scaffold length: 2270229.28
+Scaffold N50: 8857421
+Scaffold auN: 8856822.02
+Scaffold L50: 24
+Largest scaffold: 27992649
+Smallest scaffold: 17764
+# contigs: 266
+Total contig length: 603880988
+Average contig length: 2270229.28
+Contig N50: 8857421
+Contig auN: 8856822.02
+Contig L50: 24
+Largest contig: 27992649
+Smallest contig: 17764
+# gaps in scaffolds: 0
+Total gap length in scaffolds: 0
+Average gap length in scaffolds: 0.00
+Gap N50 in scaffolds: 0
+Gap auN in scaffolds: 0.00
+Gap L50 in scaffolds: 0
+Largest gap in scaffolds: 0
+Smallest gap in scaffolds: 0
+Base composition (A:C:G:T): 169868341:132259585:132197431:169555631
+GC content %: 43.79
+# soft-masked bases: 0
+# segments: 266
+Total segment length: 603880988
+Average segment length: 2270229.28
+# gaps: 0
+# paths: 266
+```
+this seems way more palusible but idk where it came from
