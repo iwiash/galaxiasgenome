@@ -166,4 +166,11 @@ running BUSCO on the purged.fa file to see how it looks:
 ```
 busco -i purged.fa -m geno -o gbrev_purged_BUSCO -l eukaryota_odb10
 ```
+same as before purging
+
+**purge_haplotigs**
+```
+purge_haplotigs hist -t 10 -b aligned.bam \ # This bam file is produced in the step above
+	-g /path/to/merged/assembly/hectors_merged_assembly.fasta
+```
 
