@@ -168,9 +168,13 @@ busco -i purged.fa -m geno -o gbrev_purged_BUSCO -l eukaryota_odb10
 ```
 same as before purging
 
-**purge_haplotigs**
+## purge_haplotigs
 ```
-purge_haplotigs hist -t 10 -b GB_aln.sam \ 
-	-g /path/to/merged/assembly/hectors_merged_assembly.fasta
+samtools view -bS GB_aln.sam | samtools sort -o GB_aln_sorted.bam -T tmp.ali
+```
+sam > sorted bam
+```
+purge_haplotigs hist -t 10 -b GB_aln_sorted.bam \ 
+	-g gbrev_hifi_reads.fq.gz
 ```
 
