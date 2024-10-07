@@ -175,6 +175,6 @@ samtools view -bS GB_aln.sam | samtools sort -o GB_aln_sorted.bam -T tmp.ali
 sam > sorted bam
 ```
 purge_haplotigs hist -t 10 -b GB_aln_sorted.bam \ 
-	-g gbrev_hifi_reads.fq.gz
+	-g purged.fa
 ```
 
