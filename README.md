@@ -15,4 +15,4 @@ Code and file involved in the assembly of a Tasmanian *Galaxias brevipinnis* ref
   [minimap_paf.sl](minimap_paf.sl) - script - reran to output as a .paf file rather than SAM output
 
 
-also various note files - dw abt them
+everything else is just various note files
