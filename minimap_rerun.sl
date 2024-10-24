@@ -18,3 +18,5 @@ echo "alignment and file conversion complete"
 
 #minimap header or smt inside of other bam is causing probs w purge_haplotigs
 #rerun with exact ver # from Sebastian code and with a big memory to make sure its not a memory problem
+
+#Submitted batch job 51355133
