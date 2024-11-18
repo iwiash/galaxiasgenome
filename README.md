@@ -16,3 +16,5 @@ Code and file involved in the assembly of a Tasmanian *Galaxias brevipinnis* ref
 
 
 everything else is just various note files
+
+note to self: find . -type f -exec touch {} + to touch files in nobackup
