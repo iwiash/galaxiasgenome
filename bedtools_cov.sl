@@ -18,3 +18,6 @@ bedtools coverage -a purged_genome_windows.bed \
                   2> coverage_errors.log
 
 echo "coverage finished"
+
+
+bedtools doesnt have parallelisation for coverage maybe so dont actually run this 
