@@ -13,7 +13,7 @@ module load SAMtools
 # Run the bedtools coverage command
 bedtools coverage -a purged_genome_windows.bed \
                   -b align_rerun.bam \
-                  -mean -threads 16 \
+                  -mean \
                   > coverage_20k_windows.txt \
                   2> coverage_errors.log
 
