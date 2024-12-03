@@ -17,3 +17,5 @@ minimap2 \
 echo "alignment and file conversion complete"
 
 #minimap maps raw reads to asm, samtools converts to sorted bam?
+
+##Batch job 52147351
