@@ -11,7 +11,7 @@ module load SAMtools/1.16.1-GCC-11.3.0
 minimap2 \
     -t 16 -ax map-hifi \
     purged.fa gbrev_hifi_reads.fq.gz \
-    --secondary=no | samtools sort -m 5G -o purgehap_align.bam -T temp.ali \
+    --secondary=no | samtools sort -m 5G -o align_rerun.bam -T temp.ali \
     2> minimap2_rerun_errors.log
 
 echo "alignment and file conversion complete"
