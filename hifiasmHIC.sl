@@ -24,6 +24,5 @@ awk '/^S/{print ">"$2;print $3}' \
 
 echo "conversion done"
 
-#batch job 52209203
-#Submitted batch job 52890176 - with 96
+#batch job 53115052
 
