@@ -1,0 +1,128 @@
+---
+title: "PCA_remake"
+author: "Ash Iwikau"
+date: "2025-04-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r message=FALSE}
+library("tidyverse")
+library("ggplot2")
+library("ggrepel")
+```
+
+Load in eigenvec/val files
+```{r}
+eigenvec = read.delim("pca_results.eigenvec", header = TRUE, sep ="\t")
+eigenval = read.delim("pca_results.eigenval", header = FALSE)
+```
+
+Load in metadata
+```{r}
+popmetadata = read.table("popmetadatacleaned.txt", header = TRUE, sep = "\t")
+```
+
+Merge metadata and eigenvectors
+(needs to have a column in common so I just added the IID column to the metadata object)
+(pretty sure this only works coz theyre in the same order so be careful in future - find a better way)
+```{r}
+popmetadata$IID = eigenvec$IID
+
+metadata_eigenvec = merge(eigenvec, popmetadata, by = "IID")
+```
+
+Turn into a dataframe (??)
+```{r}
+dfMetadataEigenvec = as.data.frame(metadata_eigenvec)
+```
+
+Calculate percentage of variance explained by each PC for the axes
+```{r}
+percent_var = (eigenval$V1 / sum(eigenval$V1)) * 100
+```
+
+Plot
+```{r}
+ggplot(dfMetadataEigenvec, aes(x = PC1, y = PC2, color = POPULATION)) +
+  geom_point(size = 3) +
+  ##stat_ellipse(type="norm") +
+  xlab(paste0("PC1: ", round(percent_var[1], 2), "% variance")) +
+  ylab(paste0("PC2: ", round(percent_var[2], 2), "% variance")) +
+  ##geom_text_repel(aes(label = POPULATION), size = 3) +
+  theme_minimal()
+```
+
+Filter out very divergent pops
+```{r}
+popfiltered = dfMetadataEigenvec %>% filter(!POPULATION %in% c("Lagoon Saddle Tarn", "Awatotara Stream", "Kawhaki Ck"))
+```
+
+Re-plot
+```{r}
+ggplot(popfiltered, aes(x = PC1, y = PC2, color = POPULATION)) +
+  geom_point(size = 3) +
+  ##stat_ellipse(type="norm") +
+  xlab(paste0("PC1: ", round(percent_var[1], 2), "% variance")) +
+  ylab(paste0("PC2: ", round(percent_var[2], 2), "% variance")) +
+  geom_text_repel(aes(label = POPULATION), size = 3) +
+  theme_minimal()
+```
+
+It's a bit busy with all the labels but I have yet to figure out of there is a way to have just 1 per cluster 
+or if that has to be done manually
+
+## Variations on the PCA
+
+### FULL
+
+```{r}
+ggplot(dfMetadataEigenvec, aes(x = PC1, y = PC2, color = MIGRATORY.STATUS)) +
+  geom_point(size = 3) +
+  ##stat_ellipse(type="norm") +
+  xlab(paste0("PC1: ", round(percent_var[1], 2), "% variance")) +
+  ylab(paste0("PC2: ", round(percent_var[2], 2), "% variance")) +
+  ##geom_text_repel(aes(label = POPULATION), size = 3) +
+  theme_minimal()
+```
+
+
+```{r}
+ggplot(dfMetadataEigenvec, aes(x = PC1, y = PC2, color = ISLAND.MAINLAND)) +
+  geom_point(size = 3) +
+  ##stat_ellipse(type="norm") +
+  xlab(paste0("PC1: ", round(percent_var[1], 2), "% variance")) +
+  ylab(paste0("PC2: ", round(percent_var[2], 2), "% variance")) +
+  ##geom_text_repel(aes(label = POPULATION), size = 3) +
+  theme_minimal()
+```
+
+### FILTERED
+
+```{r}
+ggplot(popfiltered, aes(x = PC1, y = PC2, color = MIGRATORY.STATUS)) +
+  geom_point(size = 3) +
+  ##stat_ellipse(type="norm") +
+  xlab(paste0("PC1: ", round(percent_var[1], 2), "% variance")) +
+  ylab(paste0("PC2: ", round(percent_var[2], 2), "% variance")) +
+  geom_text_repel(aes(label = POPULATION), size = 3) +
+  theme_minimal()
+```
+
+Left the population labels but maybe change to mig stat?
+```{r}
+ggplot(popfiltered, aes(x = PC1, y = PC2, color = ISLAND.MAINLAND)) +
+  geom_point(size = 3) +
+  ##stat_ellipse(type="norm") +
+  xlab(paste0("PC1: ", round(percent_var[1], 2), "% variance")) +
+  ylab(paste0("PC2: ", round(percent_var[2], 2), "% variance")) +
+  geom_text_repel(aes(label = POPULATION), size = 3) +
+  theme_minimal()
+```
+
+Same as abvoe
