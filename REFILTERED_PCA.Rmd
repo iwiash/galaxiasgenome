@@ -1,0 +1,163 @@
+---
+title: "REFILTERED PCA"
+author: "Ash Iwikau"
+date: "2025-06-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r message=FALSE}
+library("tidyverse")
+library("ggplot2")
+library("ggrepel")
+```
+
+Load in eigenvec/val files
+```{r}
+eigenvec = read.delim("pca_refiltered_out.eigenvec", header = TRUE, sep ="\t")
+eigenval = read.delim("pca_refiltered_out.eigenval", header = FALSE)
+```
+
+Load in metadata
+```{r}
+popmetadata = read.table("popmeta_nochath_noauck_nowhite.txt", header = TRUE, sep = "\t")
+```
+
+bind together
+```{r}
+metaEigenvec = cbind(eigenvec, popmetadata) 
+```
+
+
+Turn into a dataframe (??)
+```{r}
+metaEigenvec = as.data.frame(metaEigenvec)
+```
+
+Calculate percentage of variance explained by each PC for the axes
+```{r}
+percent_var = (eigenval$V1 / sum(eigenval$V1)) * 100
+```
+
+
+Plot
+```{r}
+ggplot(metaEigenvec, aes(x = PC1, y = PC2, color = POPULATION)) +
+  geom_point(size = 3) +
+  ##stat_ellipse(type="norm") +
+  xlab(paste0("PC1: ", round(percent_var[1], 2), "% variance")) +
+  ylab(paste0("PC2: ", round(percent_var[2], 2), "% variance")) +
+  ##geom_text_repel(aes(label = POPULATION), size = 3) +
+  theme_minimal()
+```
+
+```{r}
+ggplot(metaEigenvec, aes(x = PC1, y = PC2, color = METAPOP)) +
+  geom_point(size = 3) +
+  ##stat_ellipse(type="norm") +
+  xlab(paste0("PC1: ", round(percent_var[1], 2), "% variance")) +
+  ylab(paste0("PC2: ", round(percent_var[2], 2), "% variance")) +
+  ##geom_text_repel(aes(label = POPULATION), size = 3) +
+  theme_minimal()
+```
+
+refilter everything to rm lagoon saddle tarn and rerun:
+
+Load in subset eigenvec/val files
+```{r}
+subseteigenvec = read.delim("subset_lagrm_pca_out.eigenvec", header = TRUE, sep ="\t")
+subseteigenval = read.delim("subset_lagrm_pca_out.eigenval", header = FALSE)
+```
+
+Load in metadata
+```{r}
+subsetmeta = read.table("popmeta_nolag.txt", header = TRUE, sep = "\t")
+```
+
+bind together
+```{r}
+subsetMetaEigenvec = cbind(subseteigenvec, subsetmeta) 
+```
+
+
+Turn into a dataframe (??)
+```{r}
+subsetMetaEigenvec = as.data.frame(subsetMetaEigenvec)
+```
+
+Calculate percentage of variance explained by each PC for the axes
+```{r}
+subsetpercent_var = (subseteigenval$V1 / sum(subseteigenval$V1)) * 100
+```
+
+
+Plot
+```{r}
+ggplot(subsetMetaEigenvec, aes(x = PC1, y = PC2, color = POPULATION)) +
+  geom_point(size = 3) +
+  ##stat_ellipse(type="norm") +
+  xlab(paste0("PC1: ", round(subsetpercent_var[1], 2), "% variance")) +
+  ylab(paste0("PC2: ", round(subsetpercent_var[2], 2), "% variance")) +
+  ##geom_text_repel(aes(label = POPULATION), size = 3) +
+  theme_minimal()
+```
+
+
+```{r}
+ggplot(subsetMetaEigenvec, aes(x = PC1, y = PC2, color = MIGRATORY_STATUS)) +
+  geom_point(size = 3) +
+  ##stat_ellipse(type="norm") +
+  xlab(paste0("PC1: ", round(subsetpercent_var[1], 2), "% variance")) +
+  ylab(paste0("PC2: ", round(subsetpercent_var[2], 2), "% variance")) +
+  ##geom_text_repel(aes(label = POPULATION), size = 3) +
+  theme_minimal()
+```
+
+
+```{r}
+ggplot(subsetMetaEigenvec, aes(x = PC1, y = PC2, color = METAPOP)) +
+  geom_point(size = 3) +
+  ##stat_ellipse(type="norm") +
+  xlab(paste0("PC1: ", round(subsetpercent_var[1], 2), "% variance")) +
+  ylab(paste0("PC2: ", round(subsetpercent_var[2], 2), "% variance")) +
+  ##geom_text_repel(aes(label = POPULATION), size = 3) +
+  theme_minimal()
+```
+
+
+## NOW I ALSO WANNA DO A JUST RM NO REDO PLINK ONE JIC
+
+Filter out very divergent pops
+```{r}
+lagpopfiltered = metaEigenvec %>% filter(!POPULATION %in% "Lagoon-Saddle-Tarn")
+```
+
+Plot
+```{r}
+ggplot(lagpopfiltered, aes(x = PC1, y = PC2, color = POPULATION)) +
+  geom_point(size = 3) +
+  ##stat_ellipse(type="norm") +
+  xlab(paste0("PC1: ", round(subsetpercent_var[1], 2), "% variance")) +
+  ylab(paste0("PC2: ", round(subsetpercent_var[2], 2), "% variance")) +
+  ##geom_text_repel(aes(label = POPULATION), size = 3) +
+  theme_minimal()
+```
+
+
+ok weird........
+
+Plot
+```{r}
+ggplot(lagpopfiltered, aes(x = PC1, y = PC2, color = METAPOP)) +
+  geom_point(size = 3) +
+  ##stat_ellipse(type="norm") +
+  xlab(paste0("PC1: ", round(subsetpercent_var[1], 2), "% variance")) +
+  ylab(paste0("PC2: ", round(subsetpercent_var[2], 2), "% variance")) +
+  ##geom_text_repel(aes(label = POPULATION), size = 3) +
+  theme_minimal()
+```
