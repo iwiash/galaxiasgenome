@@ -1,0 +1,36 @@
+Clone repositroy
+```
+git clone https://github.com/esrud/GONE.git
+```
+
+Use subset VCFs of noislands_renamed_full_sorted.vcf that separate each pops
+
+Make chrom map file
+```
+bcftools view -H ../subset_vcfs/12mile_only_renamed.vcf | cut -f 1 | uniq | awk '{print $0"\t"$0}' > 12mile.chrom-map.txt
+```
+Make .map/.ped files
+```
+vcftools --vcf ../subset_vcfs/12mile_only_renamed.vcf --chrom-map 12mile.chrom-map.txt --out 12mile --plink
+```
+
+Ok this is when it gets a bit stupid - gotta be a better way
+```
+Manually rm SCAFFOLD_000 in front of names with ctrl f replace in .map file
+ - could definitely replace this with a sed cmd but for debugging of the actual gone script i want to move forward
+
+cp .map and .ped files into gone directory - in future might have to do a hideous ln -s file struct for each lake
+```
+
+```
+#!/bin/bash -e
+#SBATCH --job-name=gone_testrun
+#SBATCH --time=15:00:00
+#SBATCH --mem=32G
+#SBATCH --account=uoo02831
+#SBATCH --cpus-per-task=12
+
+bash script_GONE.sh subset_vcfs/12mile_only_renamed
+
+echo "gone run complete'
+```
