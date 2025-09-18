@@ -1,4 +1,4 @@
-Clone repositroy
+Clone repository
 ```
 git clone https://github.com/esrud/GONE.git
 ```
@@ -34,3 +34,40 @@ bash script_GONE.sh subset_vcfs/12mile_only_renamed
 
 echo "gone run complete'
 ```
+
+TOGA
+Requires 2bit format
+
+Convert gb ref to 2bit:
+
+```
+module load Miniconda3
+
+conda activate
+
+conda create -n fatotwobit
+conda activate fatotwobit
+conda install bioconda::ucsc-fatotwobit
+
+faToTwoBit gb_hic_purged_softmasked.fa.masked gb_softmasked.2bit
+```
+
+Download Atlantic Salmon ref genome and convert to 2bit 
+```
+conda install -c conda-forge ncbi-datasets-cli
+
+datasets download genome accession GCF_905237065.1 --include gff3,rna,cds,protein,genome,seq-report
+## lowkey dont need all of those but may as well have them if needed
+
+faToTwoBit ncbi_dataset/data/GCF_905237065.1/GCF_905237065.1_Ssal_v3.1_genomic.fna salmo_salar.2bit
+```
+Convert gff3 to bed?
+```
+module load BEDOPS
+
+gff2bed < mikado.final.longest.gff3 > gb_anno.bed
+
+```
+Run toga
+```
+toga.py --project_dir togaout/ --limit_to_ref_chrom ptg000017l_1 
