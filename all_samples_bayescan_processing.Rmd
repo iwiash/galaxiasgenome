@@ -1,0 +1,377 @@
+---
+title: "clean bayescan ALL SAMPLES NO LOWDATA processing"
+author: "Ash Iwikau"
+date: "2025-07-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Load ggplots
+```{r}
+library(ggplot2)
+library(tidyverse)
+```
+
+### Read in data 
+```{r}
+bayescan = read.table("no_island_bayescan_input.g_fst.txt", header=TRUE) 
+```
+
+### Load in txt file with CHROM, POS, SNPID from VCF file
+```{r}
+snppositions = read.table("renamed_bysize_bayescan_positions.txt", header=FALSE)
+```
+
+### Bind to bayescan results
+```{r}
+bayescan=cbind(snppositions, bayescan) 
+```
+
+### Rename columns
+```{r}
+colnames(bayescan)=c("CHROM","POSIT","SNPID","PROB","LOG_PO","Q_VALUE","ALPHA","FST") 
+```
+
+### Extract numeric part of CHROM
+```{r}
+bayescan$CHROM_numeric = as.numeric(gsub("scaffold_(\\d+)", "\\1", bayescan$CHROM))
+```
+
+### Sort by numeric chrom # and remove this temp column
+```{r}
+bayescan_sorted = bayescan[order(bayescan$CHROM_numeric),]
+
+bayescan_sorted$CHROM_numeric <- NULL
+```
+
+### Assign selection as diversifying/neutral/balancing?
+```{r}
+bayescan_sorted$SELECTION <- ifelse(bayescan_sorted$ALPHA>=0&bayescan_sorted$Q_VALUE<=0.01,"diversifying",
+                ifelse(bayescan_sorted$ALPHA>=0&bayescan_sorted$Q_VALUE>0.01,"neutral","balancing")) 
+
+bayescan_sorted$SELECTION<- factor(bayescan_sorted$SELECTION)
+```
+
+Marking everything with a qval less than 0.01 as diversifying and the others as neutral/balancing
+
+This is probably not super necessary but I think I use it as a quick way of colouring the elbow plot later so may as well keep
+
+### Make everything with a qvalue of 0 (less than 0.0000001) have a score of 0.0000001
+```{r}
+bayescan_sorted[bayescan_sorted$Q_VALUE<=0.00001,"Q_VALUE"]=0.00001
+```
+
+### Check how many have a significant q val
+```{r}
+sum(bayescan_sorted$Q_VALUE <=0.01)
+```
+
+```{r}
+sum(bayescan_sorted$Q_VALUE <=0.05)
+```
+
+### Log the q values
+```{r}
+bayescan_sorted$LOG10_Q <- -log10(bayescan_sorted$Q_VALUE)
+```
+
+```{r}
+bayescan_sorted$SIG = ifelse(bayescan_sorted$Q_VALUE < 0.01, "Signficant", "Non-significant")
+```
+
+```{r}
+bayescan_sorted %>% group_by(SIG) %>% tally()
+
+```
+
+### Write out the full table to a tsv file
+```{r}
+#write.table(bayescan_sorted, file = "no_islands_no_lowdata_bayescan_results.txt", sep = "\t",
+#            row.names = FALSE, col.names = TRUE)
+```
+
+
+### Make new obj that only has the sig ones (just coz)
+```{r}
+sigbayescan = bayescan_sorted[bayescan_sorted$Q_VALUE<=0.01 ,]
+```
+
+
+### Write significant q value results to its own tsv
+```{r}
+#write.table(sigbayescan, file = "no_islands_no_lowdata_significant_bayescan_results.txt", sep = "\t",
+#            row.names = FALSE, col.names = TRUE)
+```
+
+
+### Order by q value? 
+```{r}
+qsortedbayescan = bayescan_sorted[order(bayescan_sorted$Q_VALUE, decreasing = FALSE),]
+```
+
+
+## Plotting
+
+Set axis names
+```{r}
+x_title="-Log10(q-value)" 
+y_title="Fst"
+```
+
+Make some log significance cutoffs to put some lines
+```{r}
+log_cutoff = -log10(0.05)
+log_cutoff_0.01 = -log10(0.01)
+
+```
+
+Make the graph obj
+```{r}
+graph_1 = ggplot(bayescan_sorted,aes(x=LOG10_Q,y=FST)) 
+```
+
+Add some stuff on the graph
+```{r}
+graph_1+geom_point(aes(fill= SELECTION), pch=21, size=2)+ 
+  #geom_text()+ 
+  scale_fill_manual(name="Selection",values=c("white","red","orange"))+ 
+  labs(x=x_title)+ 
+  labs(y=y_title)+ 
+  theme(axis.title=element_text(size=12, family="Helvetica",face="bold"), legend.position="none")+ 
+  theme(axis.text.x=element_text(colour="black"))+ 
+  theme(axis.text.y=element_text(colour="black",size=12))+ 
+  theme(axis.text.x=element_text(colour="black",size=12))+ 
+  theme(panel.border = element_rect(colour="black", fill=NA, size=3),  
+        axis.title=element_text(size=18,colour="black",family="Helvetica",face="bold")) +
+  theme_classic() +
+  geom_vline(xintercept = log_cutoff, linetype="dashed", color="red", size=1) +
+  geom_vline(xintercept = log_cutoff_0.01, linetype="dashed", color="blue", size=1)
+```
+
+Heres one where I changed the colours/legend i guess
+```{r}
+graph_1 + 
+  geom_point(aes(fill = ifelse(SELECTION == "diversifying", "sig", "non")), pch=21, size=2) + 
+  #geom_text()+ 
+  scale_fill_manual(name = "Selection", values = c("sig" = "red", "non" = "transparent")) + 
+  labs(x=x_title)+ 
+  labs(y=y_title)+ 
+  theme(axis.title=element_text(size=12, family="Helvetica",face="bold"), legend.position="none")+
+  theme(axis.text.x=element_text(colour="black"))+ 
+  theme(axis.text.y=element_text(colour="black",size=12))+ 
+  theme(axis.text.x=element_text(colour="black",size=12))+ 
+  theme(panel.border = element_rect(colour="black", fill=NA, size=3),  
+        axis.title=element_text(size=18,colour="black",family="Helvetica",face="bold")) +
+  theme_classic() +
+  geom_vline(xintercept = log_cutoff, linetype="dashed", color="red", size=1) +
+  geom_vline(xintercept = log_cutoff_0.01, linetype="dashed", color="blue", size=1) 
+  #geom_vline(xintercept = log_cutoff_gwas, linetype="dashed", color="blue", size=1) 
+```
+
+
+# FST ANALYSIS AND MANHATTAN PLOTTING
+
+
+```{r}
+quantile(bayescan_sorted$FST, c(0.975, 0.995, 0.999), na.rm = T)
+```
+so 99.5% of samples have an fst of 0.152 or lower...  so this would assign anything with this or higher as outliers
+
+
+```{r}
+range(bayescan_sorted$FST)
+```
+highest fst is 0.491
+
+
+### Use quantiles to set outlier thresholds - the top 5 and 1% of FST scores get set as outliers
+```{r}
+quant_threshold = quantile( bayescan_sorted$FST, 0.995 )
+
+```
+
+```{r}
+SECONDquant_threshold = quantile( bayescan_sorted$FST, 0.999 )
+
+```
+
+### Add column with top 1% of FST values as outliers
+```{r}
+bayescan_sorted = bayescan_sorted %>% mutate(OUTLIER = ifelse(bayescan_sorted$FST > SECONDquant_threshold, "outlier", "background"))
+
+```
+
+### How many outliers are there
+```{r}
+bayescan_sorted %>% group_by(OUTLIER) %>% tally()
+
+```
+
+this is more than found sig in the bayescan processing above ^ coz that was based off of significance cutoffs
+
+```{r}
+sigbayescan %>% group_by(CHROM) %>% tally()
+```
+
+**further filter outliers based on qval maybe?  lets just see if the plotting still works first**
+
+
+## MANHATTANS
+
+### Make obj a df coz its easier to work w
+```{r}
+df_bayescan = as.data.frame(bayescan_sorted)
+```
+
+
+### Just straight plot no nuance
+```{r}
+ggplot(df_bayescan, aes(CHROM, FST, colour = OUTLIER)) + 
+  geom_point()
+```
+
+
+heres just ptg17
+```{r}
+ggplot(df_bayescan %>% filter(CHROM == "scaffold_0021"),
+       aes(POSIT, FST, colour = SELECTION))+geom_point() 
+```
+
+### Calc cumulative positions (so can graph in order)
+```{r}
+cumulative_position = df_bayescan  %>%
+  group_by(CHROM) %>%
+  summarise(max_bp = max(POSIT)) %>%
+  mutate(bp_add = lag(cumsum(max_bp), default = 0)) %>%
+  select(CHROM, bp_add)
+```
+
+### Add back to original data
+```{r}
+df_bayescan <- df_bayescan %>%
+  inner_join(cumulative_position, by = "CHROM") %>%
+  mutate(CUMULATIVEBP = POSIT + bp_add)
+```
+
+### Set the middle of each scaffold for labelling (still looks like shit but w/e)
+```{r}
+axis_set = df_bayescan |>
+  group_by(CHROM) |>
+  summarize(center = mean(CUMULATIVEBP))
+```
+
+
+
+### Now plot full manhattan
+```{r}
+
+manhattan_fst = ggplot(df_bayescan, 
+                       aes(x = CUMULATIVEBP, y = FST, color = as_factor(CHROM))) + 
+  geom_point(size = 3 , alpha = 0.5, ) +
+  scale_x_continuous( label = axis_set$CHROM, breaks = axis_set$center) +
+  scale_color_manual(values = rep(c("darkgrey", "#363636"), unique(length(axis_set$CHROM)) )) +
+  geom_point(data=subset(df_bayescan, SIG=="Signficant"), color="red", size=3, alpha = 0.5) +
+  labs( x = NULL, y = (expression(F[ST])) , ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    axis.text.x = element_text(angle = 60, size = 4, vjust = 0.5))
+```
+
+```{r}
+manhattan_fst
+
+```
+
+
+
+
+```{r}
+ggplot(df_bayescan, aes(
+  x = CUMULATIVEBP, y = (FST),
+  color = (Q_VALUE <= 0.001))) +
+  geom_point(size = 1.5, alpha = 0.75) +
+  geom_hline( yintercept = SECONDquant_threshold) +
+  scale_x_continuous(
+    label = axis_set$CHROM,
+    breaks = axis_set$center) +
+  labs(
+    x = NULL ,
+    y = "FST" , 
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.x = element_text(angle = 60, size = 4, vjust = 0.5)
+  )
+
+```
+
+```{r}
+ggplot(df_bayescan %>% filter(CHROM == "ptg000017l_1"), aes(
+  x = CUMULATIVEBP, y = (FST),
+  color = (Q_VALUE <= 0.01))) +
+  geom_point(size = 2, alpha = 0.75) +
+  #geom_hline( yintercept = quant_threshold) +
+  #geom_hline( yintercept = SECONDquant_threshold) +
+  labs(
+    x = "Scaffold ptg000017" ,
+    y = "FST"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.x=element_blank()
+  )
+
+```
+
+```{r}
+ggplot(df_bayescan %>% filter(CHROM == "scaffold_0021"), 
+                       aes(x = CUMULATIVEBP, y = FST, color = as_factor(CHROM))) + 
+  geom_point(size = 1.5, alpha = 0.5, ) +
+  scale_x_continuous( label = axis_set$CHROM, breaks = axis_set$center) +
+  scale_color_manual(values = rep(c("darkgrey", "#363636"), unique(length(axis_set$CHROM)) )) +
+  geom_point(data=subset(df_bayescan %>% filter(CHROM == "scaffold_0021"), SIG=="Signficant"), color="red", size=2, alpha = 0.5,) +
+  labs( x = NULL, y = (expression(F[ST])) , ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+      panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    axis.text.x = element_text(angle = 60, size = 4, vjust = 0.5))
+```
+
+```{r}
+ggplot(df_bayescan %>% filter(CHROM == "ptg000077l_1"), aes(
+  x = CUMULATIVEBP, y = (FST),
+  color = (Q_VALUE <= 0.01))) +
+  geom_point(size = 2, alpha = 0.75) +
+  #geom_hline( yintercept = quant_threshold) +
+  #geom_hline( yintercept = SECONDquant_threshold) +
+  labs(
+    x = "Scaffold ptg000077" ,
+    y = "FST"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.x=element_blank()
+  )
+```
