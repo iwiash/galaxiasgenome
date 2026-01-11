@@ -53,7 +53,7 @@ snakemake --cores all filtered.recode.vcf
 
 ```
 
-### VCF filtering
+## VCF filtering
 ```
 nano filtered_indvs.txt
 ## general individuals to remove
