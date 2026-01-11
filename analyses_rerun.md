@@ -9,7 +9,7 @@ git init
 
 ** add filetree here **
 
-### SNP calling
+## SNP calling
 ```
 module load cutadapt/4.4-gimkl-2022a-Python-3.11.3
 module load FastQC/0.12.1
@@ -20,7 +20,7 @@ module load Snakemake ###
 
 ```
 
-**Config file**
+### Config file
 ```
 mode: "refmap" # "denovo" or "refmap"
 
@@ -38,20 +38,19 @@ genome: # only needed for refmap mode
 vcf_filtering:
   parameters: "--max-missing 0.8 --maf 0.001" # vcftools arguments, passed at once
 ```
-
-Make rule graph
+### Snakemake
 ```
+  ## make graph of rules
 snakemake --dag filtered.recode.vcf | dot -Tsvg > dag.svg
-```
 
-Run snakemake pipeline to bwa step
-```
+  ## run snakemake pipeline to bwa step
 snakemake --cores all filtered.recode.vcf
 
-## once hits bwa errors out so ru by hand:
+  ## once hits bwa errors out so ru by hand:
 
-## then run snake again
+  ## then run snake again
 snakemake --cores all filtered.recode.vcf
+
 ```
 
 ### VCF filtering
