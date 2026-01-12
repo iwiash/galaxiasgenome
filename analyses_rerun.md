@@ -47,7 +47,7 @@ snakemake --dag filtered.recode.vcf | dot -Tsvg > dag.svg
 snakemake --cores all filtered.recode.vcf
 
   ## once hits bwa errors out so ru by hand:
-
+bwa index -p polished_genome_22kb_filtered ../../polished_genome_22kb_filtered.fa
   ## then run snake again
 snakemake --cores all filtered.recode.vcf
 
