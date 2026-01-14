@@ -12,11 +12,12 @@ git init
 ## SNP calling
 ```
 module load cutadapt/4.4-gimkl-2022a-Python-3.11.3
+module load BWA/0.7.18-GCC-12.3.0
 module load FastQC/0.12.1
-module load SAMtools/1.21-GCC-12.3.0
+module load SAMtools/1.19-GCC-12.3.0
 module load VCFtools/0.1.15-GCC-9.2.0-Perl-5.30.1
-module load Stacks ###
-module load Snakemake ###
+module load Stacks/2.67-GCC-12.3.0
+module load snakemake/7.32.3-gimkl-2022a-Python-3.11.3
 
 ```
 
@@ -47,7 +48,7 @@ snakemake --dag filtered.recode.vcf | dot -Tsvg > dag.svg
 snakemake --cores all filtered.recode.vcf
 
   ## once hits bwa errors out so ru by hand:
-bwa index -p polished_genome_22kb_filtered ../../polished_genome_22kb_filtered.fa
+bwa index -p polished_genome_22kb_filtered.fa polished_genome_22kb_filtered.fa
   ## then run snake again
 snakemake --cores all filtered.recode.vcf
 
