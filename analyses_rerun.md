@@ -14,11 +14,10 @@ git init
 module load cutadapt/4.4-gimkl-2022a-Python-3.11.3
 module load BWA/0.7.18-GCC-12.3.0
 module load FastQC/0.12.1
-module load SAMtools/1.19-GCC-12.3.0
 module load VCFtools/0.1.15-GCC-9.2.0-Perl-5.30.1
 module load Stacks/2.67-GCC-12.3.0
 module load snakemake/7.32.3-gimkl-2022a-Python-3.11.3
-
+module load SAMtools/1.19-GCC-12.3.0
 ```
 
 ### Config file
