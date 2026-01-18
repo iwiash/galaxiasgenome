@@ -192,3 +192,36 @@ iqtree2 -nt 32 -s $PHYLIP -st DNA -m MFP -bb 1000 -nm 5000 -pre $OUTDIR$PREFIX
 echo "modelfinder tree run complete"
 
 ```
+
+## BayeScan outlier testing
+
+Input : 
+
+### PGDSpider GUI
+```
+
+Input file: sub_master_no_offshore_islands.recode.vcf
+Output format: GESTE/Bayescan
+Output file: pgdspider_outputs/no_offshore_islands_bayescan_input
+
+Press convert - comes up with a little screen where you can add a metadata file with pop IDs and pop assignments
+- no headers, txt file
+```
+```
+#!/bin/bash -e
+#SBATCH --job-name=bayescombined # Job name (shows up in the queue)
+#SBATCH --time=8:00:00      # Walltime (HH:MM:SS) 48h
+#SBATCH --mem=16G            # Memory in MB
+#SBATCH --account=uoo02831
+#SBATCH --cpus-per-task=4
+
+module purge
+
+module load BayeScan
+
+bayescan_2.1 \
+	-threads 4 \
+	maskedcombined_geste.txt
+
+echo "bayescan finished
+```
