@@ -162,3 +162,33 @@ rm $POSITIONS $SEQUENCE $STRING $REFERENCE
 echo "reference sequence added to phylip!  dont forget to manually change the sample number :)"
 ```
 
+### Modelfinder pro 
+```
+#!/bin/bash -e
+#SBATCH --job-name=mfp_iqtree_alldata 
+#SBATCH --time=15:00:00      # Walltime (HH:MM:SS)
+#SBATCH --mem=5G 
+#SBATCH --account=uoo02831
+#SBATCH --cpus-per-task=32
+#SBATCH --output=%x_%j.out
+#SBATCH --error=%x_%j.err
+
+## load modules 
+module purge
+module load IQ-TREE/2.2.2.2-gimpi-2022a
+
+## set input variables
+PHYLIP="all_samples_iqtree_input.min4.phy"
+## set output variables
+PREFIX="mfp_all_samples"
+OUTDIR="mfp_all_samples_output/"
+
+## make output directory if doesn't exist
+mkdir $OUTDIR
+
+## run  iqtree with modelfinder
+iqtree2 -nt 32 -s $PHYLIP -st DNA -m MFP -bb 1000 -nm 5000 -pre $OUTDIR$PREFIX
+
+echo "modelfinder tree run complete"
+
+```
