@@ -194,7 +194,7 @@ echo "modelfinder tree run complete"
 ```
 
 ## BayeScan outlier testing
-Metadata:
+### Metadata
 ```
 	## Pull metadata from full metadata file (00_metadata)
 cut -f 1,2 NO_ISLANDS_all_locations_no_lowdata_FULL_METADATA.txt > bayescan_metadata_no_islands.txt
@@ -205,26 +205,33 @@ cut -f 1,2 NO_ISLANDS_all_locations_no_lowdata_FULL_METADATA.txt > bayescan_meta
 Input file: sub_master_no_offshore_islands.recode.vcf
 Input metadata: bayescan_metadata_no_islands.txt
 Output format: GESTE/Bayescan
-Output file: pgdspider_outputs/no_offshore_islands_bayescan_input
+Output file: pgdspider_outputs/no_offshore_islands_bayescan_input.txt
+SPID: snpcalling_rerun_bayescan.spid
 
 Press convert - comes up with a little screen where you can add a metadata file with pop IDs and pop assignments
 
 ```
+
+### Bayescan slurm
 ```
 #!/bin/bash -e
-#SBATCH --job-name=bayescombined # Job name (shows up in the queue)
+#SBATCH --job-name=bayescan # Job name (shows up in the queue)
 #SBATCH --time=8:00:00      # Walltime (HH:MM:SS) 48h
 #SBATCH --mem=16G            # Memory in MB
 #SBATCH --account=uoo02831
 #SBATCH --cpus-per-task=4
+#SBATCH --output=%x_%j.out
+#SBATCH --error=%x_%j.err
 
 module purge
+module load BayeScan/2.1-GCCcore-7.4.0
 
-module load BayeScan
+GESTE="no_offshore_islands_bayescan_input.txt"
 
 bayescan_2.1 \
 	-threads 4 \
-	maskedcombined_geste.txt
+	$GESTE
 
-echo "bayescan finished
+echo "bayescan finished"
+
 ```
