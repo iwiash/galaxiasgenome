@@ -194,18 +194,21 @@ echo "modelfinder tree run complete"
 ```
 
 ## BayeScan outlier testing
-
-Input : 
+Metadata:
+```
+	## Pull metadata from full metadata file (00_metadata)
+cut -f 1,2 NO_ISLANDS_all_locations_no_lowdata_FULL_METADATA.txt > bayescan_metadata_no_islands.txt
+```
 
 ### PGDSpider GUI
 ```
-
 Input file: sub_master_no_offshore_islands.recode.vcf
+Input metadata: bayescan_metadata_no_islands.txt
 Output format: GESTE/Bayescan
 Output file: pgdspider_outputs/no_offshore_islands_bayescan_input
 
 Press convert - comes up with a little screen where you can add a metadata file with pop IDs and pop assignments
-- no headers, txt file
+
 ```
 ```
 #!/bin/bash -e
