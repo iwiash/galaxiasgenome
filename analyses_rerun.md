@@ -235,3 +235,88 @@ bayescan_2.1 \
 echo "bayescan finished"
 
 ```
+
+## PCA analysis
+
+Prepare all the files for:
+
+* All samples eigenvectors
+* No islands only eigenvectors
+* No islands no lagoon saddle tarn eigenvectors
+* Only mainland migratory (13mi, breccia, Stewart is) eigenvectors
+
+Sort of a confusing script sorry:
+```
+#!/usr/bin/env bash 
+set -e
+
+exec &>> pca_prep.log
+
+## load modules
+module purge
+module load PLINK/2.00a6.9
+module load VCFtools/0.1.15-GCC-9.2.0-Perl-5.30.1
+
+## set variables
+## existing vcfs
+VCF="../00_data/master_working_vcf_all_pops_no_lowdata.recode.vcf"
+NOISLAND="../00_data/sub_master_no_offshore_islands.recode.vcf"
+
+## subset vcfs (created here)
+MIGVCF="../00_data/mainland_migratory_only"
+LSTVCF="../00_data/sub_master_no_lagoon_no_islands"
+
+## plink outputs
+BED="../00_data/master_working_vcf_all_pops_no_lowdata"
+NOISLANDBED="../00_data/sub_master_no_offshore_islands"
+FREQ="master_vcf_allele_frequencies"
+
+## PCA outputs
+FULLOUT="all_samples_pca"
+MIGOUT="mainland_migratory_only_pca"
+LSTOUT="no_lagoon_no_islands_pca"
+NOISLANDOUT="no_islands_pca"
+
+## metadata
+MIGR="../00_metadata/mainland_migratory.txt"
+LST="../00_metadata/lagoon_saddle_indvs.txt"
+
+
+## convert full VCF to BED
+plink2 --vcf $VCF --make-bed --out $BED
+
+## convert no islands to bed
+plink2 --vcf $NOISLAND --make-bed --out $NOISLANDBED
+
+## run allele freq calculations
+plink2 --bfile $BED --freq --out $FREQ
+
+## subset VCF to only migratory individuals
+vcftools --vcf $VCF --keep $MIGR --max-missing 0.8 --out $MIGVCF --recode
+
+## convert VCF to BED for migratory only
+plink2 --vcf $MIGVCF.recode.vcf --make-bed --out $MIGOUT
+
+## subset island free VCF to remove LST
+vcftools --vcf $NOISLAND --remove $LST --max-missing 0.8 --out $LSTVCF --recode
+
+## convert VCF to BED for LST
+plink2 --vcf $LSTVCF.recode.vcf --make-bed --out $LSTOUT
+
+echo "VCF converted to BED"
+
+## run PC analysis all samples
+plink2 --bfile $BED --pca --out $FULLOUT
+
+## run PC analysis mainland migratory only
+plink2 --bfile $MIGOUT --read-freq $FREQ.afreq --pca --out $MIGOUT
+
+## run PC analysis island removed all other samples
+plink2 --bfile $NOISLANDBED --pca --out $NOISLANDOUT
+
+## run PC analysis islands + LST removed
+plink2 --bfile $LSTOUT --pca --out $LSTOUT
+
+echo "eigenvector/values produced - now go run your PCAs in R :)"
+```
+
