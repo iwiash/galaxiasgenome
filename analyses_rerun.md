@@ -335,7 +335,7 @@ echo "eigenvector/values produced - now go run your PCAs in R :)"
 ```
 
 ## WinPCA
-Dependencies stuff
+#### Dependencies stuff
 ```
 module load Python
 pip install scikit-allel
@@ -350,6 +350,24 @@ chmod +x winpca/winpca
 cd /home/iwias275/bin
 ln -s /home/iwias275/nobackup/source_files/GBS/source_files/all_analyses_rerun/06_winpca/winpca/winpca
 ## removed old link just in casies
+```
+
+#### Find first and last position of scaffold of interest (17)
+```
+grep "^scaffold_17" master_working_vcf_all_pops_no_lowdata.recode.vcf | cut -f 1,2 | head -n 1
+## scaffold_17     48102
+
+grep "^scaffold_17" master_working_vcf_all_pops_no_lowdata.recode.vcf | cut -f 1,2 | tail -n 1
+## scaffold_17     23340122
+
+```
+#### Run WinPCA plot for this scaffold
+```
+## calculate PCAs
+winpca pca scaffold_17_outputs/scaffold_17_master_vcf master_working_vcf_all_pops_no_lowdata.recode.vcf scaffold_17:48102-23340122
+
+## run chromplot
+winpca chromplot scaffold_17_outputs/scaffold_17_master_vcf scaffold_17:48102-23340122 -m all_locations_no_lowdata_FULL_METADATA.txt -g MIGRATORY-STATUS -c Diadromous:2596BE,Non-Diadromous:be2528
 ```
 -------------------------------------------------------------------------------------------------------------------------------
 Changed the snps per window down from 20 to 10 to increase the amt of scaff21 called - couldnt figure out how to do with flags so had to alter the config py
