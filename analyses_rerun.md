@@ -241,6 +241,13 @@ grep -v "^#" ../00_data/polished_genome_22kb_filtered.fa | cut -f 1,2,3 > positi
 
 ```
 
+#### Also refilter VCF to make copy with only significant SNPs
+```
+cut -f 3 significant_only_bayescan_stats_no_islands.txt > no_islands_sig_positions.txt
+
+vcftools --vcf ../00_data/maf_filtered_sub_no_offshore_vcf.recode.vcf --snps no_islands_sig_positions.txt --out maf_filtered_no_islands_bayescansig --recode
+```
+
 ** Link R script **
 
 ## PCA analysis
