@@ -250,6 +250,28 @@ vcftools --vcf ../00_data/maf_filtered_sub_no_offshore_vcf.recode.vcf --snps no_
 
 ** Link R script **
 
+### Calculate raw FST values 
+
+#### Need a list of migratory and nonmigratory individuals:
+```
+## migratory all - all incl islands
+cat ../../00_metadata/mainland_migratory.txt ../../02_vcf_filtering/island_indvs.txt | grep -v "^#" > migratory_all.txt
+
+## migratory no islands
+cp ../../00_metadata/mainland_migratory.txt migratory_no_islands.txt
+
+## nonmigratory
+grep -v -f migratory_all.txt ../../00_metadata/bayescan_metadata_no_islands.txt | cut -f 1 > nonmigratory_all.txt
+
+```
+
+#### Weir FST with VCFtools
+```
+vcftools --vcf master_working_vcf_all_pops_no_lowdata.recode.vcf --weir-fst-pop migratory_all.txt --weir-fst-pop nonmigratory_all.txt --out allmigratory_vs_nonmigratory
+
+vcftools --vcf sub_master_no_offshore_islands.recode.vcf --weir-fst-pop migratory_no_islands.txt --weir-fst-pop nonmigratory_all.txt --out noislandsmigratory_vs_nonmigratory
+```
+
 ## PCA analysis
 
 Prepare all the files for:
@@ -369,41 +391,7 @@ winpca pca scaffold_17_outputs/scaffold_17_master_vcf master_working_vcf_all_pop
 ## run chromplot
 winpca chromplot scaffold_17_outputs/scaffold_17_master_vcf scaffold_17:48102-23340122 -m all_locations_no_lowdata_FULL_METADATA.txt -g MIGRATORY-STATUS -c Diadromous:2596BE,Non-Diadromous:be2528
 ```
--------------------------------------------------------------------------------------------------------------------------------
-Changed the snps per window down from 20 to 10 to increase the amt of scaff21 called - couldnt figure out how to do with flags so had to alter the config py
-Run PCA 
-```
-winpca pca newgb_fulldata fulldata_islandsincl_sorted.vcf scaffold_0021:222179-8840409 
-```
-
-Run plot
-```
-winpca chromplot newgb_fulldata scaffold_0021:222179-8840409 -m all_locations_no_lowdata_FULL_METADATA.txt -g MIGRATORY-STATUS -c Diadromous:2596BE,Non-Diadromous:be2528
-```
-
-
-rerun plots for a couple more scaffolds
-```
-winpca pca scaffold0001 fulldata_islandsincl_sorted.vcf scaffold_0001:838277-27914757
-
-winpca chromplot scaffold0001 scaffold_0001:838277-27914757 -m all_locations_no_lowdata_FULL_METADATA.txt -g MIGRATORY-STATUS -c Diadromous:2596BE,Non-Diadromous:be2528
-```
-
-```
-winpca pca scaffold0007 fulldata_islandsincl_sorted.vcf scaffold_0007:19978-12821445
-
-winpca chromplot scaffold0007 scaffold_0007:19978-12821445 -m all_locations_no_lowdata_FULL_METADATA.txt -g MIGRATORY-STATUS -c Diadromous:2596BE,Non-Diadromous:be2528
-```
-
-blue: 2596BE  red: be2528
-
-
-rerun scaff 21 zoomed in?
-```
-winpca pca zoomed_scaff21 fulldata_islandsincl_sorted.vcf scaffold_0021:1922178-8840409
-```
-coz theres nothing for ages at the start
-
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 genome plot all:
 ```
