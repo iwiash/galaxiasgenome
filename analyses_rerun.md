@@ -406,12 +406,17 @@ winpca genomeplot ./ $CHROMS -m all_locations_no_lowdata_FULL_METADATA.txt -g MI
 ## LDBlockShow
 #### Input files
 ```
+## no islands all SNPs VCF
+VCF = sub_master_no_offshore_islands.recode.vcf 
 
+## bayescan original run significnt SNPs 
+SNPs = original_run_scaffold_17_significant_snps.txt 
 
 ```
 
 #### Run LD
 ```
+## run initial trace
 LDBlockShow/bin/LDBlockShow -InVCF sub_master_no_offshore_islands.recode.vcf \
 	-OutPut outputs/scaffold_17_no_islands_linkage \
 	-Region scaffold_17:48102:23340122 \
