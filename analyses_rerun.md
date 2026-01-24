@@ -402,3 +402,29 @@ CHROMS='scaffold0001,scaffold0007,scaffold0021,scaffold0037,scaffold0080'
 
 winpca genomeplot ./ $CHROMS -m all_locations_no_lowdata_FULL_METADATA.txt -g MIGRATORY-STATUS -c Diadromous:2596BE,Non-Diadromous:be2528
 ```
+
+## LDBlockShow
+#### Input files
+```
+
+
+```
+
+#### Run LD
+```
+LDBlockShow/bin/LDBlockShow -InVCF sub_master_no_offshore_islands.recode.vcf \
+	-OutPut outputs/scaffold_17_no_islands_linkage \
+	-Region scaffold_17:48102:23340122 \
+	-NoShowLDist 90000000
+
+## run some aesthetic changes
+LDBlockShow/bin/ShowLDSVG -InPreFix outputs/scaffold_17_no_islands_linkage \
+	-OutPut outputs/scaffold_17_no_islands_linkage \
+	-SpeSNPName original_run_scaffold_17_significant_snps.txt \
+	-NoShowLDist 90000000 \
+	-PointSizeRatio 0.5 \
+	-SNPNameSizeRatio 0
+
+```
+
+** add img here **
