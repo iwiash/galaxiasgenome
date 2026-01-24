@@ -403,7 +403,9 @@ CHROMS='scaffold0001,scaffold0007,scaffold0021,scaffold0037,scaffold0080'
 winpca genomeplot ./ $CHROMS -m all_locations_no_lowdata_FULL_METADATA.txt -g MIGRATORY-STATUS -c Diadromous:2596BE,Non-Diadromous:be2528
 ```
 
-## LDBlockShow
+## Linkage
+### LDBlockShow
+
 #### Input files
 ```
 ## no islands all SNPs VCF
@@ -433,3 +435,17 @@ LDBlockShow/bin/ShowLDSVG -InPreFix outputs/scaffold_17_no_islands_linkage \
 ```
 
 ** add img here **
+
+### LDna
+#### Make VCF/BED of only scaffold 17
+```
+## sort vcf
+vcf-sort sub_master_no_islands_scaff17_only.recode.vcf > sub_master_no_islands_scaff17_only_sorted.vcf
+## make bed files
+plink2 --vcf sub_master_no_islands_scaff17_only_sorted.vcf --make-bed --out scaffold_17_only_plink
+
+## make square matrix of r2 values
+plink2 --bfile scaffold_17_only_plink --r2-unphased square --out scaffold17_linkage_r2
+
+```
+```
