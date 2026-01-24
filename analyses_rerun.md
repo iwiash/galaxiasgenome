@@ -448,4 +448,4 @@ plink2 --vcf sub_master_no_islands_scaff17_only_sorted.vcf --make-bed --out scaf
 plink2 --bfile scaffold_17_only_plink --r2-unphased square --out scaffold17_linkage_r2
 
 ```
-```
+
