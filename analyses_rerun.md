@@ -270,6 +270,9 @@ grep -v -f migratory_all.txt ../../00_metadata/bayescan_metadata_no_islands.txt 
 vcftools --vcf master_working_vcf_all_pops_no_lowdata.recode.vcf --weir-fst-pop migratory_all.txt --weir-fst-pop nonmigratory_all.txt --out allmigratory_vs_nonmigratory
 
 vcftools --vcf sub_master_no_offshore_islands.recode.vcf --weir-fst-pop migratory_no_islands.txt --weir-fst-pop nonmigratory_all.txt --out noislandsmigratory_vs_nonmigratory
+
+## make a list of significant SNP unadjusted FSTs
+grep -f significant_snps_bayescan_stats_no_islands.txt raw_fst_calculations/noislandsmigratory_vs_nonmigratory.weir.fst > original_run_significant_snps_raw_weir_fst.txt
 ```
 
 ## PCA analysis
