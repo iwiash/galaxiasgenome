@@ -448,4 +448,10 @@ plink2 --vcf sub_master_no_islands_scaff17_only_sorted.vcf --make-bed --out scaf
 plink2 --bfile scaffold_17_only_plink --r2-unphased square --out scaffold17_linkage_r2
 
 ```
+#### Make 012 encoded genotype files
+```
+vcftools --vcf sub_master_no_islands_scaff17_only_sorted.vcf --012 --out scaffold_17_012_encoded
 
+## this gives indivs as rows but i need indvs as columns so I flipped it in excel
+
+```
