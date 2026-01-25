@@ -453,5 +453,6 @@ plink2 --bfile scaffold_17_only_plink --r2-unphased square --out scaffold17_link
 vcftools --vcf sub_master_no_islands_scaff17_only_sorted.vcf --012 --out scaffold_17_012_encoded
 
 ## this gives indivs as rows but i need indvs as columns so I flipped it in excel
-
+## then gzip
+gzip 012_encoded_genotype_calls_scaffold_17.tsv
 ```
