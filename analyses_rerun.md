@@ -456,3 +456,81 @@ vcftools --vcf sub_master_no_islands_scaff17_only_sorted.vcf --012 --out scaffol
 ## then gzip
 gzip 012_encoded_genotype_calls_scaffold_17.tsv
 ```
+
+#### Had to do a lot of troubleshooting:
+```
+vcftools --vcf sub_master_no_islands_scaff17_only_sorted.vcf --012 --out 1genofile
+
+cut -f 2- 1genofile.012 > 1genofile.geno
+
+awk '
+{
+  for (i = 1; i <= NF; i++) {
+    a[NR, i] = $i
+  }
+  maxNF = (NF > maxNF ? NF : maxNF)
+}
+END {
+  for (i = 1; i <= maxNF; i++) {
+    for (j = 1; j <= NR; j++) {
+      printf "%s%s", a[j, i], (j < NR ? "\t" : "\n")
+    }
+  }
+}
+' 1genofile.geno > 1genofile.geno.t
+
+gzip 1genofile.geno.t
+
+ngsLD   --geno 1genofile.geno.t.gz   --pos positions_sub_master_no_islands_scaff17_only_sorted.txt   --n_ind 153   --n_sites 5225   --out test
+
+## new error - something wrong with pos file
+
+## problem was there is a few sites with duplicates
+
+ ## find duplicate positions
+awk '{print $1":"$2}' positions_sub_master_no_islands_scaff17_only_sorted.txt  | sort | uniq -d
+
+#scaffold_17:13884744
+#scaffold_17:14289647
+#scaffold_17:16084413
+#scaffold_17:16084430
+#scaffold_17:16084431
+
+nl -ba positions_sub_master_no_islands_scaff17_only_sorted.txt > pos_with_ln.txt
+
+grep "scaffold_17[[:space:]]13884744" pos_with_ln.txt
+grep "scaffold_17[[:space:]]14289647" pos_with_ln.txt
+grep "scaffold_17[[:space:]]16084413" pos_with_ln.txt
+grep "scaffold_17[[:space:]]16084430" pos_with_ln.txt
+grep "scaffold_17[[:space:]]16084431" pos_with_ln.txt
+
+#3789  scaffold_17     13884744
+#3790  scaffold_17     13884744
+
+#3846  scaffold_17     14289647
+#3847  scaffold_17     14289647
+
+#4662  scaffold_17     16084413
+#4663  scaffold_17     16084413
+
+#4664  scaffold_17     16084430
+#4665  scaffold_17     16084430
+
+##take first lines and put in file lines_to_drop.txt
+3790
+3847
+4663
+4665
+4667
+
+nl -ba positions_sub_master_no_islands_scaff17_only_sorted.txt   | awk 'NR==FNR{drop[$1]; next} !($1 in drop) {print $2, $3}' lines_to_drop.txt -   > pos_clean.txt
+
+nl -ba genofile.geno.t   | awk 'NR==FNR{drop[$1]; next} !($1 in drop) {for (i=2; i<=NF; i++) printf "%s%s", $i, (i<NF?OFS:ORS)}' lines_to_drop.txt -   > geno_clean.t
+
+## change pos delimiters to tab from space
+tr -s ' ' '\t' < pos_clean.txt > pos_clean_tab.txt
+
+gzip geno_clean.t
+
+ngsLD   --geno geno_clean.t.gz   --pos pos_clean_tab.txt   --n_ind 153   --n_sites 5220   --out test_clean
+```
