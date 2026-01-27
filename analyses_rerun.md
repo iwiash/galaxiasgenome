@@ -516,6 +516,9 @@ grep "scaffold_17[[:space:]]16084431" pos_with_ln.txt
 #4664  scaffold_17     16084430
 #4665  scaffold_17     16084430
 
+#4666  scaffold_17     16084431
+#4667  scaffold_17     16084431
+
 ##take first lines and put in file lines_to_drop.txt
 3790
 3847
