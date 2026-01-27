@@ -459,9 +459,9 @@ gzip 012_encoded_genotype_calls_scaffold_17.tsv
 
 #### Had to do a lot of troubleshooting:
 ```
-vcftools --vcf sub_master_no_islands_scaff17_only_sorted.vcf --012 --out 1genofile
+vcftools --vcf sub_master_no_islands_scaff17_only_sorted.vcf --012 --out genofile
 
-cut -f 2- 1genofile.012 > 1genofile.geno
+cut -f 2- genofile.012 > genofile.geno
 
 awk '
 {
@@ -477,11 +477,11 @@ END {
     }
   }
 }
-' 1genofile.geno > 1genofile.geno.t
+' genofile.geno > genofile.geno.t
 
 gzip 1genofile.geno.t
 
-ngsLD   --geno 1genofile.geno.t.gz   --pos positions_sub_master_no_islands_scaff17_only_sorted.txt   --n_ind 153   --n_sites 5225   --out test
+ngsLD   --geno genofile.geno.t.gz   --pos positions_sub_master_no_islands_scaff17_only_sorted.txt   --n_ind 153   --n_sites 5225   --out test
 
 ## new error - something wrong with pos file
 
