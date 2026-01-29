@@ -440,7 +440,18 @@ LDBlockShow/bin/ShowLDSVG -InPreFix outputs/scaffold_17_no_islands_linkage \
 #### Make VCF/BED of only scaffold 17
 ```
 ## sort vcf
-vcf-sort sub_master_no_islands_scaff17_only.recode.vcf > sub_master_no_islands_scaff17_only_sorted.vcf
+vcf-sort ../sub_master_no_offshore_islands.recode.vcf > sorted_sub_master_no_offshore_islands.vcf
+
+## filter duplicate pos and for scaff 17
+vcftools --vcf sorted_sub_master_no_offshore_islands.vcf --chr "scaffold_17" --exclude filter_duplicate_pos.txt --out sorted_scaffold17_only --recode
+
+## heres the list of duplicate IDs
+#341453:76:+
+#341828:26:-
+#343608:31:-
+#343608:14:-
+#343608:13:-
+
 ## make bed files
 plink2 --vcf sub_master_no_islands_scaff17_only_sorted.vcf --make-bed --out scaffold_17_only_plink
 
@@ -448,6 +459,7 @@ plink2 --vcf sub_master_no_islands_scaff17_only_sorted.vcf --make-bed --out scaf
 plink2 --bfile scaffold_17_only_plink --r2-unphased square --out scaffold17_linkage_r2
 
 ```
+#### Turns out I dodnt need this but I did discover I have some duplicate called positions so I'll leave it in.
 #### Make 012 encoded genotype files
 ```
 vcftools --vcf sub_master_no_islands_scaff17_only_sorted.vcf --012 --out scaffold_17_012_encoded
