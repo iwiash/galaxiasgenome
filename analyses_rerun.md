@@ -549,3 +549,13 @@ gzip geno_clean.t
 
 ngsLD   --geno geno_clean.t.gz   --pos pos_clean_tab.txt   --n_ind 153   --n_sites 5220   --out test_clean
 ```
+
+### Stairway
+#### Run easysSFS preview to find proj values
+```
+easySFS/easySFS.py -i master_working_vcf_all_pops_no_lowdata_SORTED.vcf \
+	-p population_metadata/population_metadata.txt \
+	-a \ ## use all snps in vcf
+	--preview > easysfs_preview.txt
+
+```
