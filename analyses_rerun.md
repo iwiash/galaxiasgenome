@@ -436,6 +436,55 @@ LDBlockShow/bin/ShowLDSVG -InPreFix outputs/scaffold_17_no_islands_linkage \
 
 ** add img here **
 
+### ADMIXTURE
+#### Conda env
+```
+conda create -n admixture python=3.8
+conda activate admixture 
+conda install bioconda::admixture
+
+```
+
+#### Make tped/bed from vcf
+```
+vcftools --vcf recode.renamed.vcf --plink-tped --out admixture_allsamples
+
+plink2 --tped admixture_allsamples.tped --tfam admixture_allsamples.tfam --make-bed --out admixture_allsamples
+
+```
+#### Run admixture
+The larger K runs take a long tim - if need to rerun split into smaller jobs so they queue better
+```
+#!/bin/bash -e
+#SBATCH --job-name=admixture_12-14 
+#SBATCH --time=25:00:00      # Walltime (HH:MM:SS)
+#SBATCH --mem=5G 
+#SBATCH --account=uoo02831
+#SBATCH --cpus-per-task=72
+#SBATCH --output=%x_%j.out
+#SBATCH --error=%x_%j.err
+
+module purge
+module load Miniconda3
+
+eval "$(conda shell.bash hook)"
+
+conda activate admixture
+
+## change for K in to correct numbers
+for K in {12..14} ; do admixture --cv=10 -B1000 -j72 admixture_allsamples.bed $K | tee log${K}.out; done
+
+echo "admixturte finished"
+
+```
+
+#### Extract cross-validation and metadata for plotting
+```
+grep -h CV log*.out > cross_validation.txt
+
+
+```
+
 ### LDna
 #### Make VCF/BED of only scaffold 17
 ```
