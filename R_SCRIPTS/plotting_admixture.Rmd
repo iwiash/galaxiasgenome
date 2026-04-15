@@ -1,0 +1,156 @@
+---
+title: "ADMIXTURE results"
+author: "ASH IWIKAU"
+date: "2026-02-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r, echo = FALSE}
+library(stringr)
+library(ggplot2)
+library(dplyr)
+
+```
+
+
+
+```{r}
+## Read in cross validation
+cv = read.table("cross_validation.txt")
+
+## Make a column of K numbers tested by grabbing it out of col 3 
+cv$K <-gsub("[\\(\\)]", "", regmatches(cv$V3, gregexpr("\\(.*?\\)", cv$V3)))
+
+## Remove K= from start of #
+cv$K = gsub("K=", "", cv$K)
+
+## Pad numbers so 1 is 01 etc so it doesnt get confused w 10 etc
+cv$K = str_pad(str_extract(cv$K, "\\d+"), width = 2, pad = "0", side = "left")
+
+## Pull out just cv # and k #
+CV <- select(cv, V4,K)
+colnames(CV) <- c("CV","K")
+
+```
+
+
+## Plot
+```{r}
+ggplot(CV, aes(x = K, y = CV)) +
+  geom_point() +
+  #geom_line() +  
+  labs(title = "Cross-Validation Plot", 
+       x = "K", 
+       y = "Cross-Validation Error") +
+  theme_minimal()
+
+```
+
+
+```{r}
+samplelist <- read.table("all_populations_sampleid_popindicator_only.txt",
+                       header = TRUE)
+
+
+```
+
+
+```{r, echo = FALSE}
+library(reshape2)
+library(plyr)
+library(stringr)
+library(ggplot2)
+library(tidyverse)
+library(paletteer)
+
+```
+
+Load in pop data and combine k outputs for all populations
+
+**Note**: to make plotting easier I changed Lake Sylvester samples called LSL to SYL in the sample list file
+```{r, echo = FALSE}
+## set colours
+mycol1 = paletteer::paletteer_d("MetBrewer::Signac")
+mycol2 = paletteer::paletteer_d("MetBrewer::Signac", direction = -1)
+
+## make blank table to stick all the data in
+all_data <- tibble(sample=character(),
+                   k=numeric(),
+                   Q=character(),
+                   value=numeric())
+
+## read all the data out of all the sample files into the tibble
+for (k in 1:14){
+  data <- read_delim(paste0("admixture_allsamples.",k,".Q"),
+                     col_names = paste0("Q",seq(1:k)),
+                     delim=" ")
+  data$sample <- samplelist$SAMPLE.ID
+  data$k <- k
+  
+## turn it to long ways
+  data %>% gather(Q, value, -sample,-k) -> data
+  all_data <- rbind(all_data,data)
+}
+```
+
+Plot best k
+```{r}
+all_data %>%
+  filter(k == 7) %>%
+  ggplot(.,aes(x=sample,y=value,fill=factor(Q))) + 
+  geom_bar(stat="identity",position="stack") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 4)) +
+  scale_fill_manual(values = mycol2)
+
+```
+
+
+```{r}
+all_data %>%
+  filter(k == 8) %>%
+  ggplot(.,aes(x=sample,y=value,fill=factor(Q))) + 
+  geom_bar(stat="identity",position="stack") +
+  xlab("Sample") + ylab("Ancestry") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 4)) +
+  scale_fill_manual(values = mycol2, name="K", labels=seq(1:14))
+
+```
+
+
+```{r}
+all_data %>%
+  filter(k == 10) %>%
+  ggplot(.,aes(x=sample,y=value,fill=factor(Q))) + 
+  geom_bar(stat="identity",position="stack") +
+  xlab("Sample") + ylab("Ancestry") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, size = 4)) +
+  scale_fill_manual(values = mycol2, name="K", labels=seq(1:14))
+
+```
+Plot all
+```{r}
+all_data %>%
+  ggplot(.,aes(x=sample, y=value, fill = factor(Q))) + 
+  geom_bar(stat ="identity", position = "stack") +
+  xlab("Sample") + ylab("Ancestry") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  scale_fill_manual(values = mycol2 , labels=seq(1:14)) +
+  facet_wrap(~k,ncol=1)
+
+
+```
+
+
+```{r}
+
+
+```

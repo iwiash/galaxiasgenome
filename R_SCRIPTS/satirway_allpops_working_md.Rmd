@@ -1,0 +1,160 @@
+---
+title: "Stairway plot"
+author: "ASH IWIKAU"
+date: "2025-10-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+aucklandIslands = read.table("auckland_island.final.summary",header=T)
+
+chathamIsland = read.table("chatham_island.final.summary",header=T)
+
+diadromous = read.table("diadromous_max.final.summary",header=T)
+
+greenLake = read.table("green_lake.final.summary",header=T)
+
+lagoonSaddle = read.table("lagoon_saddle_tarn.final.summary",header=T)
+
+chalice = read.table("lake_chalice.final.summary",header=T)
+
+marian = read.table("lake_marian.final.summary",header=T)
+
+paringa = read.table("lake_paringa.final.summary",header=T)
+
+sylvester = read.table("lake_sylvester.final.summary",header=T)
+
+rotoroa = read.table("rotoroa_max_test.final.summary",header=T)
+
+twelveMile = read.table("twelve_mile_ck.final.summary",header=T)
+
+```
+
+
+```{r}
+plot(rotoroa$year/1000,rotoroa$Ne_median/1000, log=c("xy"), type="n", xlab="Time (1k years ago)", 
+     ylab="Effective Population Size (1k individuals)",xlim=c(5,10000),ylim=c(20,20000))
+
+lines(greenLake$year/1000,greenLake$Ne_median/1000,type="s",col="green",lwd = 3)
+lines(greenLake$year/1000,greenLake$Ne_2.5./1000,type="s",col="green",lty=3)
+lines(greenLake$year/1000,greenLake$Ne_97.5./1000,type="s",col="green",lty=3)
+
+lines(lagoonSaddle$year/1000,lagoonSaddle$Ne_median/1000,type="s",col="red",lwd = 3)
+lines(lagoonSaddle$year/1000,lagoonSaddle$Ne_2.5./1000,type="s",col="red",lty=3)
+lines(lagoonSaddle$year/1000,lagoonSaddle$Ne_97.5./1000,type="s",col="red",lty=3)
+
+lines(chalice$year/1000,chalice$Ne_median/1000,type="s",col="blue",lwd = 3)
+lines(chalice$year/1000,chalice$Ne_2.5./1000,type="s",col="blue",lty=3)
+lines(chalice$year/1000,chalice$Ne_97.5./1000,type="s",col="blue",lty=3)
+
+lines(marian$year/1000,marian$Ne_median/1000,type="s",col="pink",lwd = 3)
+lines(marian$year/1000,marian$Ne_2.5./1000,type="s",col="pink",lty=3)
+lines(marian$year/1000,marian$Ne_97.5./1000,type="s",col="pink",lty=3)
+
+lines(paringa$year/1000,paringa$Ne_median/1000,type="s",col="aquamarine2",lwd = 3)
+lines(paringa$year/1000,paringa$Ne_2.5./1000,type="s",col="aquamarine2",lty=3)
+lines(paringa$year/1000,paringa$Ne_97.5./1000,type="s",col="aquamarine2",lty=3)
+
+lines(sylvester$year/1000,sylvester$Ne_median/1000,type="s",col="darkgreen",lwd = 3)
+lines(sylvester$year/1000,sylvester$Ne_2.5./1000,type="s",col="darkgreen",lty=3)
+lines(sylvester$year/1000,sylvester$Ne_97.5./1000,type="s",col="darkgreen",lty=3)
+
+lines(rotoroa$year/1000,rotoroa$Ne_median/1000,type="s",col="orange",lwd = 3)
+lines(rotoroa$year/1000,rotoroa$Ne_2.5./1000,type="s",col="orange",lty=3)
+lines(rotoroa$year/1000,rotoroa$Ne_97.5./1000,type="s",col="orange",lty=3)
+
+lines(twelveMile$year/1000,twelveMile$Ne_median/1000,type="s",col="darkorchid4",lwd = 3)
+lines(twelveMile$year/1000,twelveMile$Ne_2.5./1000,type="s",col="darkorchid4",lty=3)
+lines(twelveMile$year/1000,twelveMile$Ne_97.5./1000,type="s",col="darkorchid4",lty=3)
+
+legend(2000,1500,legend = c("Green lake","Lagoon","Chalice","Marian","Paringa","Sylvester", "Rotoroa", "Twelve Mile", "95% CI"),
+       col=c("green","red","blue", "pink", "aquamarine2", "darkgreen", "orange", "darkorchid4","black"),lty=c(1,1,1,1,1,1,1,1,3),lwd=c(5,5,5,5,5,5,5,5,1),cex=0.8)
+
+```
+
+
+```{r}
+plot(rotoroa$year/1000,rotoroa$Ne_median/1000, log=c("xy"), type="n", xlab="Time (1k years ago)", 
+     ylab="Effective Population Size (1k individuals)",xlim=c(5,10000),ylim=c(20,20000))
+
+lines(greenLake$year/1000,greenLake$Ne_median/1000,type="s",col="green",lwd = 3)
+#lines(greenLake$year/1000,greenLake$Ne_2.5./1000,type="s",col="green",lty=3)
+#lines(greenLake$year/1000,greenLake$Ne_97.5./1000,type="s",col="green",lty=3)
+
+lines(lagoonSaddle$year/1000,lagoonSaddle$Ne_median/1000,type="s",col="red",lwd = 3)
+#lines(lagoonSaddle$year/1000,lagoonSaddle$Ne_2.5./1000,type="s",col="red",lty=3)
+#lines(lagoonSaddle$year/1000,lagoonSaddle$Ne_97.5./1000,type="s",col="red",lty=3)
+
+lines(chalice$year/1000,chalice$Ne_median/1000,type="s",col="blue",lwd = 3)
+#lines(chalice$year/1000,chalice$Ne_2.5./1000,type="s",col="blue",lty=3)
+#lines(chalice$year/1000,chalice$Ne_97.5./1000,type="s",col="blue",lty=3)
+
+lines(marian$year/1000,marian$Ne_median/1000,type="s",col="pink",lwd = 3)
+#lines(marian$year/1000,marian$Ne_2.5./1000,type="s",col="pink",lty=3)
+#lines(marian$year/1000,marian$Ne_97.5./1000,type="s",col="pink",lty=3)
+
+lines(paringa$year/1000,paringa$Ne_median/1000,type="s",col="aquamarine2",lwd = 3)
+#lines(paringa$year/1000,paringa$Ne_2.5./1000,type="s",col="aquamarine2",lty=3)
+#lines(paringa$year/1000,paringa$Ne_97.5./1000,type="s",col="aquamarine2",lty=3)
+
+lines(sylvester$year/1000,sylvester$Ne_median/1000,type="s",col="darkgreen",lwd = 3)
+#lines(sylvester$year/1000,sylvester$Ne_2.5./1000,type="s",col="darkgreen",lty=3)
+#lines(sylvester$year/1000,sylvester$Ne_97.5./1000,type="s",col="darkgreen",lty=3)
+
+lines(rotoroa$year/1000,rotoroa$Ne_median/1000,type="s",col="orange",lwd = 3)
+#lines(rotoroa$year/1000,rotoroa$Ne_2.5./1000,type="s",col="orange",lty=3)
+#lines(rotoroa$year/1000,rotoroa$Ne_97.5./1000,type="s",col="orange",lty=3)
+
+lines(twelveMile$year/1000,twelveMile$Ne_median/1000,type="s",col="darkorchid4",lwd = 3)
+#lines(twelveMile$year/1000,twelveMile$Ne_2.5./1000,type="s",col="darkorchid4",lty=3)
+#lines(twelveMile$year/1000,twelveMile$Ne_97.5./1000,type="s",col="darkorchid4",lty=3)
+
+legend(2000,1500,legend = c("Green lake","Lagoon","Chalice","Marian","Paringa","Sylvester", "Rotoroa", "Twelve Mile"),
+       col=c("green","red","blue", "pink", "aquamarine2", "darkgreen", "orange", "darkorchid4"),lty=c(1,1,1,1,1,1,1,1),lwd=c(5,5,5,5,5,5,5,5),cex=0.8)
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
