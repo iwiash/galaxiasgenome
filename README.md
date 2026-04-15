@@ -2,19 +2,17 @@
 
 Code and file involved in the assembly of a Tasmanian *Galaxias brevipinnis* reference genome using PacBio HiFi sequence data
 
-[1.Initial_gbrev_assembly.md](1.Initial_gbrev_assembly.md) - all code for raw read preprocessing and intial hifiasm assembly of draft *Galaxias brevipinnis* reference genome
+001. Initial assembly draft run - no Hi-C data incorporated
 
-  [hifiasm.sl](hifiasm.sl) - slurm script for running hifiasm assembly on PacBio sequence data and conversion to fasta
+002. QC of initital draft assembly
 
-  [hifiasmHIC.sl](hifiasmHIC.sl) - slurm script for hifiasm assembly on PacBio alongside HiC data
+003.  more QC on draft assembly
 
-[2.gbrev_assembly_qc](2.gbrev_assembly_QC.md) - quality control steps undertaken on genome includes purge_dups, jellyfish, purge_haplotigs, BUSCO
+004.  genome-re-assembly incorporating Hi-C data - this is the good copy
 
-  [gbminimap2.sl](gbminimap2.sl) - script to run minimap2 read alignment to assembly for use in purge_dups/haplotigs
-  
-  [minimap_paf.sl](minimap_paf.sl) - script - reran to output as a .paf file rather than SAM output
+005.  SNP calling using GBS data and draft Hi-C assembly
 
+006.  all exploratory analyses rerun with new polished genome assembly (see [here](https://github.com/Talmonre/Galaxias-Annotation) for further assembly polishing steps done in interim)
 
-everything else is just various note files
 
 note to self: find . -type f -exec touch {} + to touch files in nobackup
